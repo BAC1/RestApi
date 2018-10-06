@@ -50,6 +50,8 @@ dependencies {
     compile('com.fasterxml.jackson.module:jackson-module-kotlin')
     compile('org.jetbrains.kotlin:kotlin-stdlib-jdk8')
     compile('org.jetbrains.kotlin:kotlin-reflect')
+    compile group: 'com.drewnoakes', name: 'metadata-extractor', version: '2.11.0'
+    compile group: 'com.adobe.xmp', name: 'xmpcore', version: '6.1.10'
     compile group: 'org.jetbrains.exposed', name: 'exposed', version: '0.10.5'
     compile group: 'joda-time', name: 'joda-time', version: '2.10'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
