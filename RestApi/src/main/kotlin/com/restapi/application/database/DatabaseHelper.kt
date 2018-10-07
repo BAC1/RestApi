@@ -8,22 +8,20 @@ import com.drew.imaging.ImageMetadataReader
 import java.net.URL
 import java.io.IOException
 import com.drew.imaging.ImageProcessingException
-import com.drew.metadata.Tag
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.LinkOption
-import java.nio.file.Path
 import java.nio.file.attribute.BasicFileAttributes
 
-class DatabaseHelper() {
+class DatabaseHelper {
     private val logger: Logger = LoggerFactory.getLogger(DatabaseHelper::class.java)
 
     object Progressive : Table() {
         val id = integer("id").autoIncrement().primaryKey()
-        val name: Column<String> = varchar("name", length = 50)
+        var name = varchar("name", length = 50)
         val path = varchar("path", length = 50)
         val size = varchar("size", length = 50)
         val width = integer("width")
@@ -50,13 +48,15 @@ class DatabaseHelper() {
 
     fun loadTables() {
         try {
-            Database.connect("jdbc:h2:mem:test", driver = "org.h2.Driver")
+            Database.connect("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", driver = "org.h2.Driver")
+            logger.info("Database loaded")
 
             transaction {
                 create(Baseline, Progressive)
             }
+            logger.info("Tables created")
         } catch (e: Exception) {
-            logger.error("Error during loading datatables! {}", e.message)
+            logger.error("Error during loading databases! {}", e.message)
         }
     }
 
@@ -65,6 +65,7 @@ class DatabaseHelper() {
             transaction {
                 drop(Baseline, Progressive)
             }
+            logger.info("Database dropped")
         } catch (e: Exception) {
             logger.error("Error during dropping datatables! {}", e.message)
         }
@@ -112,15 +113,21 @@ class DatabaseHelper() {
         return metadataObject
     }
 
-    fun insertProgressive(
-            name: String,
+    fun insertProgressive(_name: String, _path: String) {
+        //val metadata = getMetadata(_path)
 
-            path: String
-    ) {
-        val metadata = getMetadata(path)
-
-        Progressive.insert  {
-            it[name] = Column<String>("The Last Jedi")
+        transaction {
+            Progressive.insert  {
+                it[name] = "test"
+                it[size] = "test"
+                it[path] = "test"
+                it[comments] = "test"
+                it[width] = 5
+                it[height] = 5
+            }
+            for (city in Progressive.selectAll()) {
+                println("abcd: ${city[Progressive.size]}")
+            }
         }
     }
 
