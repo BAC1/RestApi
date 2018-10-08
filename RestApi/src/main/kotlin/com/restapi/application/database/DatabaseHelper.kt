@@ -8,13 +8,16 @@ import com.drew.imaging.ImageMetadataReader
 import java.net.URL
 import java.io.IOException
 import com.drew.imaging.ImageProcessingException
+import com.restapi.application.image.Metadata
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
+import java.io.FileInputStream
 import java.nio.file.Files
 import java.nio.file.LinkOption
 import java.nio.file.attribute.BasicFileAttributes
+import javax.sql.rowset.serial.SerialBlob
 
 class DatabaseHelper {
     private val logger: Logger = LoggerFactory.getLogger(DatabaseHelper::class.java)
@@ -27,6 +30,7 @@ class DatabaseHelper {
         val width = integer("width")
         val height = integer("height")
         val comments = varchar("comments", length = 50)
+        val image = blob("image")
     }
 
     object Baseline : Table() {
@@ -37,13 +41,7 @@ class DatabaseHelper {
         val width = integer("width")
         val height = integer("height")
         val comments = varchar("comments", length = 50)
-    }
-
-    inner class Metadata {
-        var size: String = ""
-        var width: String = ""
-        var height: String = ""
-        var comments: String = ""
+        val image = blob("image")
     }
 
     fun loadTables() {
@@ -56,7 +54,25 @@ class DatabaseHelper {
             }
             logger.info("Tables created")
         } catch (e: Exception) {
-            logger.error("Error during loading databases! {}", e.message)
+            logger.error("Error during loading databases!\n{}", e.message)
+        }
+    }
+
+    fun loadImages() {
+        for (path in listOf( "/images/baseline", "/images/progressive")) {
+            try {
+                File(path).walkTopDown().forEach {
+                    if (it.isFile) {
+                        getMetadata(path)
+                        when(path) {
+                            "/images/baseline" -> insertBaseline(file = it, stream = FileInputStream(it))
+                            "/images/progressive" -> insertProgressive(file = it, stream = FileInputStream(it))
+                        }
+                    }
+                }
+            } catch (e: IOException) {
+                logger.error("Error during loading image in path '$path'\n{}", e.message)
+            }
         }
     }
 
@@ -65,15 +81,13 @@ class DatabaseHelper {
             transaction {
                 drop(Baseline, Progressive)
             }
-            logger.info("Database dropped")
+            logger.info("Databases dropped")
         } catch (e: Exception) {
-            logger.error("Error during dropping datatables! {}", e.message)
+            logger.error("Error during dropping datatables!\n}", e.message)
         }
     }
 
-    private fun getMetadata(path: String): Metadata {
-        val metadataObject = Metadata()
-
+    private fun getMetadata(path: String) {
         try {
             val stream = BufferedInputStream(URL(path).openStream())
             val metadata = ImageMetadataReader.readMetadata(stream, -1)
@@ -82,7 +96,7 @@ class DatabaseHelper {
                     BasicFileAttributes::class.java,
                     LinkOption.NOFOLLOW_LINKS
             )
-            metadataObject.size = attributes.size().toString()
+            Metadata.size = attributes.size().toString()
 
             for (directory in metadata.directories) {
                 println("Loading directories ...")
@@ -96,66 +110,61 @@ class DatabaseHelper {
                     println(tag.tagTypeHex)
 
                     when (tag.tagName.toString()) {
-                        "ImageWidth" -> metadataObject.width = tag.description
-                        "ImageHeight" -> metadataObject.height = tag.description
-                        "ImageDescription" -> metadataObject.comments = tag.description
+                        "ImageWidth" -> Metadata.width = tag.description.toInt()
+                        "ImageHeight" -> Metadata.height = tag.description.toInt()
+                        "ImageDescription" -> Metadata.comments = tag.description
                         else -> logger.info("Unused tag ${tag.tagName} found.")
                     }
                 }
             }
         } catch (e: ImageProcessingException) {
             logger.error("Metadata cannot be loaded! {}", e.message)
-            return Metadata()
         } catch (e: IOException) {
             logger.error("Metadata cannot be loaded! {}", e.message)
-            return Metadata()
         }
-        return metadataObject
     }
 
-    fun insertProgressive(_name: String, _path: String) {
-        //val metadata = getMetadata(_path)
-
+    @Throws(IOException::class)
+    private fun insertProgressive(file: File, stream: FileInputStream) {
         transaction {
             Progressive.insert  {
-                it[name] = "test"
-                it[size] = "test"
-                it[path] = "test"
-                it[comments] = "test"
-                it[width] = 5
-                it[height] = 5
-            }
-            for (city in Progressive.selectAll()) {
-                println("abcd: ${city[Progressive.size]}")
+                it[name] = file.name
+                it[size] = Metadata.size
+                it[path] = file.path
+                it[comments] = Metadata.comments
+                it[width] = Metadata.width
+                it[height] = Metadata.height
+                it[image] = SerialBlob(stream.readBytes())
             }
         }
+        logger.info("Progressive image '${file.name}' added to database")
     }
 
-    fun insertBaseline(
-            file: BufferedInputStream,
-            name: String,
-            path: String
-    ) {
-        val metadata = getMetadata(path)
-
+    @Throws(IOException::class)
+    private fun insertBaseline(file: File, stream: FileInputStream) {
         transaction {
+            Baseline.insert  {
+                it[name] = file.name
+                it[size] = Metadata.size
+                it[path] = file.path
+                it[comments] = Metadata.comments
+                it[width] = Metadata.width
+                it[height] = Metadata.height
+                it[image] = SerialBlob(stream.readBytes())
+            }
+        }
+        logger.info("Baseline image '${file.name}' added to database")
+    }
 
+    fun getProgressiveByName(name: String) {
+        transaction {
+            val query: Query = Progressive.select { Progressive.name eq name }
         }
     }
 
-    fun getProgressive(name: String) {
-
-    }
-
-    fun getBaselinename(name: String) {
-
-    }
-
-    fun deleteProgressive(name: String) {
-
-    }
-
-    fun deleteBaseline(name: String) {
-
+    fun getBaselineByName(name: String) {
+        transaction {
+            val query: Query = Baseline.select { Progressive.name eq name }
+        }
     }
 }
