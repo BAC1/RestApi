@@ -13,7 +13,6 @@ class TestController {
         model["title"] = "Test"
         val base = DatabaseHelper()
         base.loadTables()
-        base.insertProgressive("", "")
         return "Test"
     }
 }
