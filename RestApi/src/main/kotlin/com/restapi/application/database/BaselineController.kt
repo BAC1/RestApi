@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
+import org.springframework.ui.set
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -25,8 +27,11 @@ class BaselineController {
     @EventListener(ApplicationReadyEvent::class)
     fun addAllBaselineImagesOnStartupToDatabase() {
         baselineRepository!!.deleteAll()
+        logger.info("Load baseline images initially to database")
         File(pathToBaselineImages).listFiles().forEach {
-            addNewImageToDatabase(file = it)
+            if (it.extension == "jpeg" || it.extension == "jpg") {
+                addNewImageToDatabase(file = it)
+            }
         }
     }
 
@@ -36,8 +41,21 @@ class BaselineController {
             val file = File(pathToBaselineImages + fileName)
             addNewImageToDatabase(file)
         } catch (e: Exception) {
-            return logger.error("Cannot find file '$fileName' in resource directory!")
+            logger.error("Cannot find or load file '$fileName'!\n${e.stackTrace}")
         }
+    }
+
+    @GetMapping(path = ["/getImage"])
+    fun getImage(@RequestParam fileName: String, model: Model): Model {
+        val images = baselineRepository!!.findAll()
+        images.forEach {
+            if (it.getName() == fileName) {
+                model["title"] = it.getName()!!
+                model["image"] = it.getPath()!!
+            }
+        }
+        logger.info("Return baseline image '$fileName' to browser")
+        return model
     }
 
     private fun addNewImageToDatabase(file: File) {

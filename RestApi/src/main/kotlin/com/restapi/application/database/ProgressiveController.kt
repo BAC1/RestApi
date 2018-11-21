@@ -1,18 +1,18 @@
 package com.restapi.application.database
 
 import com.restapi.application.image.Metadata
-import org.springframework.ui.Model
-import org.springframework.ui.set
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.context.event.ApplicationReadyEvent
+import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
+import org.springframework.ui.set
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 import java.io.File
-import org.springframework.boot.context.event.ApplicationReadyEvent
-import org.springframework.context.event.EventListener
 
 @Controller
 @RequestMapping(path=["/progressive"])
@@ -27,8 +27,11 @@ class ProgressiveController {
     @EventListener(ApplicationReadyEvent::class)
     fun addAllProgressiveImagesOnStartupToDatabase() {
         progressiveRepository!!.deleteAll()
+        logger.info("Load progressive images initially to database")
         File(pathToProgressiveImages).listFiles().forEach {
-            addNewImageToDatabase(file = it)
+            if (it.extension == "jpeg" || it.extension == "jpg") {
+                addNewImageToDatabase(file = it)
+            }
         }
     }
 
@@ -38,7 +41,7 @@ class ProgressiveController {
             val file = File(pathToProgressiveImages + fileName)
             addNewImageToDatabase(file)
         } catch (e: Exception) {
-            return logger.error("Cannot find file '$fileName' in resource directory!")
+            logger.error("Cannot find or load file '$fileName'!\n${e.stackTrace}!")
         }
     }
 
@@ -51,6 +54,7 @@ class ProgressiveController {
                 model["image"] = it.getPath()!!
             }
         }
+        logger.info("Return progressive image '$fileName' to browser")
         return model
     }
 
