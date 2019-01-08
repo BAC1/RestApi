@@ -6,13 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Controller
-import org.springframework.ui.Model
-import org.springframework.ui.set
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseBody
 import java.io.File
+import org.apache.commons.io.IOUtils
+import org.springframework.web.bind.annotation.*
+import java.io.IOException
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 @Controller
 @RequestMapping(path=["/progressive"])
@@ -28,6 +27,7 @@ class ProgressiveController {
     fun addAllProgressiveImagesOnStartupToDatabase() {
         progressiveRepository!!.deleteAll()
         logger.info("Load progressive images initially to database")
+
         File(pathToProgressiveImages).listFiles().forEach {
             if (it.extension == "jpeg" || it.extension == "jpg") {
                 addNewImageToDatabase(file = it)
@@ -35,27 +35,76 @@ class ProgressiveController {
         }
     }
 
-    @GetMapping(path = ["/addNewImage"])
-    @ResponseBody fun addNewImage(@RequestParam fileName: String) {
+    @Throws(IOException::class)
+    @RequestMapping(value = ["/loadImage/{fileName}/{width}/{height}"], method = [RequestMethod.GET])
+    fun loadImage(
+            request: HttpServletRequest,
+            response: HttpServletResponse,
+            @PathVariable("fileName") fileName: String,
+            @PathVariable("width") width: String,
+            @PathVariable("height") height: String
+    ) {
+        val images = progressiveRepository!!.findAll()
+        var media: ByteArray? = null
+
+        setMediaQueryRange(
+            width = width,
+            height = height
+        )
+
         try {
-            val file = File(pathToProgressiveImages + fileName)
-            addNewImageToDatabase(file)
+            images.forEach {
+                if (
+                    it.getName() == "${fileName.split(".").first()}.jpg" ||
+                    it.getName() == "${fileName.split(".").first()}.jpeg"
+                ) {
+                    media = loadImage(it.getPath()!!)
+                    logger.info("Return progressive image '$fileName' to browser")
+                }
+            }
         } catch (e: Exception) {
-            logger.error("Cannot find or load file '$fileName'!\n${e.stackTrace}!")
+            logger.error(e.message.toString())
         }
+
+        if (media == null) {
+            media = loadImage(images.first().getPath()!!)
+            logger.warn("Progressive image '$fileName' not found! Load first image available")
+        }
+
+        media = sizeByteArrayForDevice(media!!)
+        return response.outputStream.write(media)
     }
 
-    @GetMapping(path = ["/getImage"])
-    fun getImage(@RequestParam fileName: String, model: Model): Model {
-        val images = progressiveRepository!!.findAll()
-        images.forEach {
-            if (it.getName() == fileName) {
-                model["title"] = it.getName()!!
-                model["image"] = it.getPath()!!
+    private fun sizeByteArrayForDevice(media: ByteArray): ByteArray {
+        val size: Double = when (deviceType) {
+            Device.Mobile -> 0.6
+            Device.Tablet -> 0.8
+            Device.Desktop -> 1.0
+            else -> {
+                logger.warn("Unknown device type '$deviceType' found!")
+                1.0
             }
         }
-        logger.info("Return progressive image '$fileName' to browser")
-        return model
+
+        val newByteArraySize = (media.size.toDouble() * size).toInt()
+        return media.copyOfRange(0, newByteArraySize)
+    }
+
+    private fun loadImage(fileName: String): ByteArray {
+        val inputStream = File(fileName).inputStream()
+        return IOUtils.toByteArray(inputStream)
+    }
+
+    private fun setMediaQueryRange(width: String, height: String) {
+        deviceType = if (width.toInt() < 500 && height.toInt() < 900) {
+            Device.Mobile
+        } else if (width.toInt() <= 1024 && height.toInt() <= 1366) {
+            Device.Tablet
+        } else {
+            Device.Desktop
+        }
+
+        logger.info("Device type '$deviceType' detected")
     }
 
     private fun addNewImageToDatabase(file: File) {
@@ -71,5 +120,11 @@ class ProgressiveController {
 
         progressiveRepository!!.save(progressive)
         logger.info("Progressive image '${file.name}' saved in database")
+    }
+
+    private var deviceType: Device? = null
+
+    private enum class Device {
+        Mobile, Tablet, Desktop
     }
 }
