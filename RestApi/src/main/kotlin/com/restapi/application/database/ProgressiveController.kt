@@ -77,8 +77,8 @@ class ProgressiveController {
 
     private fun sizeByteArrayForDevice(media: ByteArray): ByteArray {
         val size: Double = when (deviceType) {
-            Device.Mobile -> 0.6
-            Device.Tablet -> 0.8
+            Device.Mobile -> 0.3
+            Device.Tablet -> 0.6
             Device.Desktop -> 1.0
             else -> {
                 logger.warn("Unknown device type '$deviceType' found!")
