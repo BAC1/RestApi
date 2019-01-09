@@ -44,20 +44,18 @@ class ProgressiveController {
     }
 
     @Throws(IOException::class)
-    @RequestMapping(value = ["/loadImage/{fileName}/{width}/{height}"], method = [RequestMethod.GET])
+    @RequestMapping(value = ["/loadImage/{fileName}/{width}"], method = [RequestMethod.GET])
     fun loadImage(
         request: HttpServletRequest,
         response: HttpServletResponse,
         @PathVariable("fileName") fileName: String,
-        @PathVariable("width") width: String,
-        @PathVariable("height") height: String
+        @PathVariable("width") width: String
     ) {
         val images = progressiveRepository!!.findAll()
         var media: ByteArray? = null
 
         setMediaQueryRange(
-            width = width,
-            height = height
+            width = width
         )
 
         try {
@@ -115,17 +113,15 @@ class ProgressiveController {
         return propertiesDevice
     }
 
-    private fun setMediaQueryRange(width: String, height: String) {
+    private fun setMediaQueryRange(width: String) {
         val propertiesDevice = loadProperties()
 
         deviceType = if (
-            width.toInt() <= propertiesDevice.getProperty("mobile.display.width").toInt() &&
-            height.toInt() <= propertiesDevice.getProperty("mobile.display.height").toInt()
+            width.toInt() <= propertiesDevice.getProperty("mobile.display.width").toInt()
         ) {
             Device.Mobile
         } else if (
-            width.toInt() <= propertiesDevice.getProperty("tablet.display.width").toInt() &&
-            height.toInt() <= propertiesDevice.getProperty("tablet.display.height").toInt()
+            width.toInt() <= propertiesDevice.getProperty("tablet.display.width").toInt()
         ) {
             Device.Tablet
         } else {
