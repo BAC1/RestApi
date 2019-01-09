@@ -85,11 +85,11 @@ class ProgressiveController {
         val propertiesDevice = loadProperties()
 
         val size: Double = when (deviceType) {
-            Device.Mobile -> propertiesDevice.getProperty("mobile.metadata.load.scale").toDouble()
-            Device.Tablet -> propertiesDevice.getProperty("tablet.metadata.load.scale").toDouble()
-            Device.Desktop -> propertiesDevice.getProperty("desktop.metadata.load.scale").toDouble()
+            Device.Mobile -> propertiesDevice.getProperty("mobile.image.load.scale").toDouble()
+            Device.Tablet -> propertiesDevice.getProperty("tablet.image.load.scale").toDouble()
+            Device.Desktop -> propertiesDevice.getProperty("desktop.image.load.scale").toDouble()
             else -> {
-                logger.warn("Unknown device type '$deviceType' found! Using metadata load scale for desktop devices")
+                logger.warn("Unknown device type '$deviceType' found! Using image load scale for desktop devices")
                 propertiesDevice.getProperty("desktop.metadata.load.scale").toDouble()
             }
         }
