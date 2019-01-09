@@ -1,6 +1,6 @@
 package com.restapi.application.database
 
-import com.restapi.application.image.Metadata
+import com.restapi.application.metadata.Metadata
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.event.ApplicationReadyEvent
@@ -65,7 +65,7 @@ class ProgressiveController {
                     it.getName() == "${fileName.split(".").first()}.jpeg"
                 ) {
                     media = loadImage(it.getPath()!!)
-                    logger.info("Return progressive image '$fileName' to browser")
+                    logger.info("Return progressive metadata '$fileName' to browser")
                 }
             }
         } catch (e: Exception) {
@@ -74,7 +74,7 @@ class ProgressiveController {
 
         if (media == null) {
             media = loadImage(images.first().getPath()!!)
-            logger.warn("Progressive image '$fileName' not found! Load first image available")
+            logger.warn("Progressive metadata '$fileName' not found! Load first metadata available")
         }
 
         media = sizeByteArrayForDevice(media!!)
@@ -85,12 +85,12 @@ class ProgressiveController {
         val propertiesDevice = loadProperties()
 
         val size: Double = when (deviceType) {
-            Device.Mobile -> propertiesDevice.getProperty("mobile.image.load.scale").toDouble()
-            Device.Tablet -> propertiesDevice.getProperty("tablet.image.load.scale").toDouble()
-            Device.Desktop -> propertiesDevice.getProperty("desktop.image.load.scale").toDouble()
+            Device.Mobile -> propertiesDevice.getProperty("mobile.metadata.load.scale").toDouble()
+            Device.Tablet -> propertiesDevice.getProperty("tablet.metadata.load.scale").toDouble()
+            Device.Desktop -> propertiesDevice.getProperty("desktop.metadata.load.scale").toDouble()
             else -> {
-                logger.warn("Unknown device type '$deviceType' found! Using image load scale for desktop devices")
-                propertiesDevice.getProperty("desktop.image.load.scale").toDouble()
+                logger.warn("Unknown device type '$deviceType' found! Using metadata load scale for desktop devices")
+                propertiesDevice.getProperty("desktop.metadata.load.scale").toDouble()
             }
         }
 
@@ -145,6 +145,6 @@ class ProgressiveController {
         progressive.setPath(file.path)
 
         progressiveRepository!!.save(progressive)
-        logger.info("Progressive image '${file.name}' saved in database")
+        logger.info("Progressive metadata '${file.name}' saved in database")
     }
 }

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <title>Images</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="jumbotron" >
+                <h1 class="text-center">Here you see all available Progressive images</h1>
+
+                <a class="btn btn-primary" th:href="${modelAndView.model.var1}">
+                    <div th:text="${modelAndView.model.var1}"></div>
+                </a>
+
+                <a class="btn btn-primary" th:href="${modelAndView.model.var2}">
+                    <div th:text="${modelAndView.model.var2}"></div>
+                </a>
+
+                <a class="btn btn-primary" th:href="${modelAndView.model.var3}">
+                    <div th:text="${modelAndView.model.var3}"></div>
+                </a>
+
+                <a class="btn btn-primary" th:href="${modelAndView.model.var4}">
+                    <div th:text="${modelAndView.model.var4}"></div>
+                </a>
+
+                <a class="btn btn-primary" th:href="${modelAndView.model.var5}">
+                    <div th:text="${modelAndView.model.var5}"></div>
+                </a>
+
+                <p class="text-center"><a class="btn btn-primary" href="/"></i>Back</a></p>
+            </div>
+        </div>
+    </body>
+</html>

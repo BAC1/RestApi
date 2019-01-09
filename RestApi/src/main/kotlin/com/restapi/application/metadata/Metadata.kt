@@ -1,4 +1,4 @@
-package com.restapi.application.image
+package com.restapi.application.metadata
 
 import javax.imageio.ImageIO
 import java.io.File
