@@ -10,6 +10,7 @@ import java.io.File
 import org.apache.commons.io.IOUtils
 import org.springframework.web.bind.annotation.*
 import java.io.IOException
+import java.util.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -19,6 +20,11 @@ class ProgressiveController {
     private val logger = LoggerFactory.getLogger(ProgressiveController::class.java)
     private val pathOfCurrentDirectory = System.getProperty("user.dir")
     private val pathToProgressiveImages = "$pathOfCurrentDirectory\\src\\main\\resources\\images\\progressive\\"
+    private var deviceType: Device? = null
+
+    private enum class Device {
+        Mobile, Tablet, Desktop
+    }
 
     @Autowired
     private var progressiveRepository: ProgressiveRepository? = null
@@ -38,11 +44,11 @@ class ProgressiveController {
     @Throws(IOException::class)
     @RequestMapping(value = ["/loadImage/{fileName}/{width}/{height}"], method = [RequestMethod.GET])
     fun loadImage(
-            request: HttpServletRequest,
-            response: HttpServletResponse,
-            @PathVariable("fileName") fileName: String,
-            @PathVariable("width") width: String,
-            @PathVariable("height") height: String
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        @PathVariable("fileName") fileName: String,
+        @PathVariable("width") width: String,
+        @PathVariable("height") height: String
     ) {
         val images = progressiveRepository!!.findAll()
         var media: ByteArray? = null
@@ -76,16 +82,19 @@ class ProgressiveController {
     }
 
     private fun sizeByteArrayForDevice(media: ByteArray): ByteArray {
+        val propertiesDevice = loadProperties()
+
         val size: Double = when (deviceType) {
-            Device.Mobile -> 0.3
-            Device.Tablet -> 0.6
-            Device.Desktop -> 1.0
+            Device.Mobile -> propertiesDevice.getProperty("mobile.image.load.scale").toDouble()
+            Device.Tablet -> propertiesDevice.getProperty("tablet.image.load.scale").toDouble()
+            Device.Desktop -> propertiesDevice.getProperty("desktop.image.load.scale").toDouble()
             else -> {
-                logger.warn("Unknown device type '$deviceType' found!")
-                1.0
+                logger.warn("Unknown device type '$deviceType' found! Using image load scale for desktop devices")
+                propertiesDevice.getProperty("desktop.image.load.scale").toDouble()
             }
         }
 
+        logger.info("Image load scale: $size")
         val newByteArraySize = (media.size.toDouble() * size).toInt()
         return media.copyOfRange(0, newByteArraySize)
     }
@@ -95,10 +104,27 @@ class ProgressiveController {
         return IOUtils.toByteArray(inputStream)
     }
 
+    private fun loadProperties(): Properties {
+        val propertiesPath = "device.properties"
+        val propertiesFile = File(ProgressiveController::class.java.classLoader.getResource(propertiesPath).toURI())
+        val propertiesDevice = Properties()
+
+        propertiesDevice.load(propertiesFile.inputStream())
+        return propertiesDevice
+    }
+
     private fun setMediaQueryRange(width: String, height: String) {
-        deviceType = if (width.toInt() < 500 && height.toInt() < 900) {
+        val propertiesDevice = loadProperties()
+
+        deviceType = if (
+            width.toInt() <= propertiesDevice.getProperty("mobile.display.width").toInt() &&
+            height.toInt() <= propertiesDevice.getProperty("mobile.display.height").toInt()
+        ) {
             Device.Mobile
-        } else if (width.toInt() <= 1024 && height.toInt() <= 1366) {
+        } else if (
+            width.toInt() <= propertiesDevice.getProperty("tablet.display.width").toInt() &&
+            height.toInt() <= propertiesDevice.getProperty("tablet.display.height").toInt()
+        ) {
             Device.Tablet
         } else {
             Device.Desktop
@@ -120,11 +146,5 @@ class ProgressiveController {
 
         progressiveRepository!!.save(progressive)
         logger.info("Progressive image '${file.name}' saved in database")
-    }
-
-    private var deviceType: Device? = null
-
-    private enum class Device {
-        Mobile, Tablet, Desktop
     }
 }
