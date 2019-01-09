@@ -2,7 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <html>
     <head>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
         <title>Images</title>
 
@@ -12,22 +13,21 @@
                 max-height: 100%;
             }
 
-            .aspectwrapper {
-                display: inline-block; /* shrink to fit */
-                width: 100vw;           /* whatever width you like */
-                position: relative;    /* so .content can use position: absolute */
+            .wrapper {
+                display: inline-block;
+                width: 100vw;
+                position: relative;
             }
 
-            .aspectwrapper::after {
-                padding-top: 56.25%; /* percentage of containing block _width_ */
+            .wrapper::after {
+                padding-top: 56.25%;
                 display: block;
                 content: '';
             }
 
             .content {
                 position: absolute;
-                top: 0; bottom: 0; right: 0; left: 0;  /* follow the parent's edges */
-                outline: thin dashed green;            /* just so you can see the box */
+                top: 0; bottom: 0; right: 0; left: 0;
             }
         </style>
     </head>
@@ -76,11 +76,10 @@
                 </script>
             </div>
 
-            <p id ="imageWidth"></p>
-            <p id ="imageHeight"></p>
-
-            <div class="aspectwrapper">
+            <div class="wrapper">
                 <div class="content">
+                    <p id ="imageWidth"></p>
+                    <p id ="imageHeight"></p>
                     <img id="progressiveImage" src="">
                 </div>
             </div>
