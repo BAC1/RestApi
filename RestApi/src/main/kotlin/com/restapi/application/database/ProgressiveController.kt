@@ -39,6 +39,8 @@ class ProgressiveController {
                 addNewImageToDatabase(file = it)
             }
         }
+
+        logger.info("All images loaded")
     }
 
     @Throws(IOException::class)
@@ -65,7 +67,7 @@ class ProgressiveController {
                     it.getName() == "${fileName.split(".").first()}.jpeg"
                 ) {
                     media = loadImage(it.getPath()!!)
-                    logger.info("Return progressive metadata '$fileName' to browser")
+                    logger.info("Return progressive image '$fileName' to browser")
                 }
             }
         } catch (e: Exception) {
@@ -74,7 +76,7 @@ class ProgressiveController {
 
         if (media == null) {
             media = loadImage(images.first().getPath()!!)
-            logger.warn("Progressive metadata '$fileName' not found! Load first metadata available")
+            logger.warn("Progressive Image '$fileName' not found! Load first imafe available")
         }
 
         media = sizeByteArrayForDevice(media!!)
@@ -90,7 +92,7 @@ class ProgressiveController {
             Device.Desktop -> propertiesDevice.getProperty("desktop.image.load.scale").toDouble()
             else -> {
                 logger.warn("Unknown device type '$deviceType' found! Using image load scale for desktop devices")
-                propertiesDevice.getProperty("desktop.metadata.load.scale").toDouble()
+                propertiesDevice.getProperty("desktop.image.load.scale").toDouble()
             }
         }
 
@@ -145,6 +147,6 @@ class ProgressiveController {
         progressive.setPath(file.path)
 
         progressiveRepository!!.save(progressive)
-        logger.info("Progressive metadata '${file.name}' saved in database")
+        logger.info("Progressive image '${file.name}' saved in database")
     }
 }

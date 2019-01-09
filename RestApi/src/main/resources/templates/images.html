@@ -15,21 +15,21 @@
                     [[${modelAndView.model.var1}]]
                 </button>
 
-                <a class="btn btn-primary" href='#'>
-                    <div th:text="${modelAndView.model.var2}"></div>
-                </a>
+                <button class="btn btn-primary" onclick="myFunction(this)">
+                    [[${modelAndView.model.var2}]]
+                </button>
 
-                <a class="btn btn-primary" href='#'>
-                    <div th:text="${modelAndView.model.var3}"></div>
-                </a>
+                <button class="btn btn-primary" onclick="myFunction(this)">
+                    [[${modelAndView.model.var3}]]
+                </button>
 
-                <a class="btn btn-primary" href='#'>
-                    <div th:text="${modelAndView.model.var4}"></div>
-                </a>
+                <button class="btn btn-primary" onclick="myFunction(this)">
+                    [[${modelAndView.model.var4}]]
+                </button>
 
-                <a class="btn btn-primary" href='#'>
-                    <div th:text="${modelAndView.model.var5}"></div>
-                </a>
+                <button class="btn btn-primary" onclick="myFunction(this)">
+                    [[${modelAndView.model.var5}]]
+                </button>
 
                 <p class="text-center"><a class="btn btn-primary" href="/"></i>Back</a></p>
 
@@ -39,13 +39,22 @@
                         var width = window.innerWidth;
                         var height = window.innerHeight;
                         var link = 'http://localhost:8080/progressive/loadImage/' + imageName + '/' + width + '/' + height;
-                        alert(link.replace(/\s/g, ''));
                         document.getElementById('progressiveImage').src=link.replace(/\s/g, '');
+
+                        setTimeout(function() {
+                            var imageWidth = document.getElementById('progressiveImage').width;
+                            var imageHeight = document.getElementById('progressiveImage').height;
+
+                            document.getElementById('imageWidth').innerHTML = 'Width: ' + imageWidth + ' px';
+                            document.getElementById('imageHeight').innerHTML = 'Height: ' + imageHeight + ' px';
+                        }, 200)
                     }
                 </script>
             </div>
 
-            <img id="progressiveImage" src="" style="width:100px">
+            <p id ="imageWidth"></p>
+            <p id ="imageHeight"></p>
+            <img id="progressiveImage" src="" style="">
         </div>
     </body>
 </html>
