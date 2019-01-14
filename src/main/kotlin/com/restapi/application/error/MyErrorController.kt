@@ -1,6 +1,5 @@
 package com.restapi.application.error
 
-import com.restapi.application.database.ProgressiveController
 import org.slf4j.LoggerFactory
 import org.springframework.boot.web.servlet.error.ErrorController
 import org.springframework.http.HttpStatus
@@ -28,14 +27,14 @@ import javax.servlet.http.HttpServletRequest
 
 @Controller
 class MyErrorController: ErrorController {
-
+    private val logger = LoggerFactory.getLogger(MyErrorController::class.java)
+    
     fun MyErrorController() {}
-    private val logger = LoggerFactory.getLogger(ProgressiveController::class.java)
     
     /**
      * Returns the html file of the appropriate error code as response to the browser when requesting an unknown url of
-     * the domain "localhost:8080" and "127.0.0.1:8080" or when an error occurred by requesting a legit url (e.g. Internal
-     * Server Error)
+     * the domain "localhost:8080" and "127.0.0.1:8080" or when an error occurred by requesting a legit url
+     * (e.g. Internal Server Error)
      *
      * @param   request   http request sent by browser
      * @return  html file name for appropriate error code
@@ -43,12 +42,13 @@ class MyErrorController: ErrorController {
      */
     @GetMapping(value = ["/error"])
     fun handleError(request: HttpServletRequest): String {
-
+        logger.warn("Error page requested")
         val errorCode = getAttributeOfErrorCode(
                 request = request,
                 errorCode = RequestDispatcher.ERROR_STATUS_CODE
         )
     
+        logger.warn("Http error '$errorCode' occurred!")
         val errorCodeAsInteger = getErrorCodeAsInteger(errorCode)
         return returnErrorPage(errorCodeAsInteger)
     }
@@ -63,23 +63,31 @@ class MyErrorController: ErrorController {
     /**
      * Retrieves the error code of the given http request
      *
-     * @param   request      http request for which an error occurred
-     * @param   errorCode    actual error code of the given request
-     * @return  error status code of the given request, or <code>null</code> if the attribute isn't available
+     * @param   request     http request for which an error occurred
+     * @param   errorCode   actual error code of the given request
+     * @return  <code>error status code</code> of the given request, or <code>null</code> if the attribute isn't available
      */
     private fun getAttributeOfErrorCode(request: HttpServletRequest, errorCode: String): Any? = request.getAttribute(errorCode)
     
     /**
      * Converts a set of digits from <code>String</code> to <code>Int</code>
      *
-     * @param   errorCode    error code as set of digits to be converted
-     * @return  error status code of the given request, or <code>0</code> if the given attribute is <code>null</code>
+     * @param       errorCode               error code as set of digits to be converted
+     * @exception   NumberFormatException   if the string cannot be parsed as an integer.
+     * @return      error status code of the given request, or <code>0</code> if the given attribute is <code>null</code>
      */
     private fun getErrorCodeAsInteger(errorCode: Any?): Int {
+        val defaultValue = 0
         return if (errorCode != null) {
-            Integer.valueOf(errorCode.toString())
+            try {
+                Integer.valueOf(errorCode.toString())
+            } catch (e: Exception) {
+                logger.error("Error while parsing error code to Integer! Returning default value '0'")
+                logger.error(e.message)
+                defaultValue
+            }
         } else {
-            0
+            defaultValue
         }
     }
     

@@ -1,5 +1,6 @@
 package com.restapi.application.welcome
 
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 
@@ -7,13 +8,14 @@ import org.springframework.web.bind.annotation.GetMapping
  * This controller handles incoming http requests for the welcome page
  *
  * @author      Markus Graf
+ * @see         org.slf4j.LoggerFactory
  * @see         org.springframework.stereotype.Controller
  * @see         org.springframework.web.bind.annotation.GetMapping
  * @version     1.0
  */
-
 @Controller
 class WelcomeController {
+    private val logger = LoggerFactory.getLogger(WelcomeController::class.java)
 
     /**
      * Returns the html file as response to the browser when requesting the url "localhost:8080/"
@@ -23,5 +25,8 @@ class WelcomeController {
      */
     
     @GetMapping("/")
-    fun showWelcomePage(): String = "index"
+    fun showWelcomePage(): String {
+        logger.warn("Welcome page requested")
+        return "index"
+    }
 }

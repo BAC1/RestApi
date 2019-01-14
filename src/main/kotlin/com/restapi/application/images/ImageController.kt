@@ -26,7 +26,7 @@ import org.springframework.web.servlet.ModelAndView
  */
 @Controller
 class ImageController {
-    private val logger = LoggerFactory.getLogger(ProgressiveController::class.java)
+    private val logger = LoggerFactory.getLogger(ImageController::class.java)
 
     @Autowired
     private var progressiveRepository: ProgressiveRepository? = null
@@ -41,6 +41,7 @@ class ImageController {
      */
     @GetMapping(value = ["/showAllImages"])
     fun showImages(modelAndView: ModelAndView): String {
+        logger.warn("Url '/showAllImages' requested")
         val images = progressiveRepository!!.findAll()
     
         addImagesToModel(
@@ -52,7 +53,7 @@ class ImageController {
                 modelAndView = modelAndView,
                 images = images
         )
-
+    
         return "images"
     }
     
