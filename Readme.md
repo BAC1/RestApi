@@ -45,6 +45,9 @@ sudo apt-get upgrade gradle
 gradle wrapper --gradle-version 2.13
 ```
 
+* Open the file **RestApi/gradle/wrapper/gradle-wrapper.properties** and enter a gradle version 4.0 or higher
+for property **distributionUrl**. For the latest gradle versions see [here](https://services.gradle.org/distributions/).
+
 #### JAVA_HOME
 Make sure Java 8 is set for the JAVA_HOME variable on your local machine (Windows and Linux)
 
@@ -82,6 +85,21 @@ password of the previously created MySQL user in the properties **spring.datasou
 
 Make sure the MySQL server is running before you execute this project!
 
+### Install project
+To open this project in Intellij, the following three methods are available:
+
+* Retrieve the project into Intellij via **VCS -> git -> clone...** and enter the link **git@github.com:BAC1/RestApi.git**
+
+* Import or open the downloaded project as Gradle project in Intellij
+
+* (Linux) Checkout the project via the command line
+```
+git checkout git@github.com:BAC1/RestApi.git
+```
+
+**Note**: In order to pull or push via git, the public SSH key must be saved in the git repository. For assistance,
+see **Author** below.
+
 ### Run Project
 
 This project can be executed either via Intellij or Gradle
@@ -95,7 +113,7 @@ been loaded. The current status is shown in the footer of Intellij.
 been updated. The current status is shown in the footer of Intellij.
 4. Right-click on file **Application.kt** and click on **Run 'com.restapi.application**
 
-#### Gradle on Linux
+#### Gradle (explained for Linux)
 Run the following commands in the command line of Intellij
 
 * Refresh the dependencies
@@ -107,6 +125,15 @@ Run the following commands in the command line of Intellij
 ```
 gradle bootRun
 ```
+
+## Known issues
+* In Firefox, images won't be shown after resizing the browser. Click on the appropriate image button to re-display the
+image.
+* In Firefox, the "car.jpg" image won't be shown when it will be displayed as first image after running the application.
+Click on the image button twice or click on another image button first.
+* When importing this project via git, Intellij breaks the folder structure and saves the .idea folder one level above
+this project. Move all files from the folder **/RestApi/RestApi** one level higher and click on **Skip** when a request
+appears to replace existing files.
 
 ## Built With
 
