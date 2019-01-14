@@ -4,9 +4,9 @@ buildscript {
         springBootVersion = '2.0.5.RELEASE'
     }
     repositories {
+        mavenLocal()
         mavenCentral()
         jcenter()
-        google()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -21,7 +21,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 group = 'com.restapi'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0'
 sourceCompatibility = 1.8
 
 compileKotlin {
@@ -39,9 +39,9 @@ compileTestKotlin {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
     jcenter()
-    google()
 }
 
 dependencies {
@@ -59,7 +59,6 @@ dependencies {
     compile group: 'joda-time', name: 'joda-time', version: '2.10'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '1.2.71'
-    compile group: 'com.android.support', name: 'support-annotations', version: '28.0.0'
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.2.71'
     compile group: 'org.jetbrains', name: 'annotations', version: '16.0.3'
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-common', version: '1.2.71'
