@@ -88,7 +88,7 @@ Make sure the MySQL server is running before you execute this project!
 ### Install project
 To open this project in Intellij, the following three methods are available:
 
-* Retrieve the project into Intellij via **VCS -> git -> clone...** and enter the link **git@github.com:BAC1/RestApi.git**
+* Retrieve the project into Intellij via **VCS -> git -> clone...** and enter the url **git@github.com:BAC1/RestApi.git**
 
 * Import or open the downloaded project as Gradle project in Intellij
 
@@ -135,9 +135,6 @@ use Chrome.
 image.
 * In Firefox, the "car.jpg" image won't be shown when it will be displayed as first image after running the application.
 Click on the image button twice or click on another image button first.
-* When importing this project via git, Intellij breaks the folder structure and saves the .idea folder one level above
-this project. Move all files from the folder **/RestApi/RestApi** one level higher and click on **Skip** when a request
-appears to replace existing files.
 
 ## Built With
 
