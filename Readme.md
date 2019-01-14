@@ -126,6 +126,10 @@ Run the following commands in the command line of Intellij
 gradle bootRun
 ```
 
+#### Use of application
+* Open your browser and enter the link **http://localhost:8080/** or **http://127.0.0.1:8080/**. It is recommended to
+use Chrome.
+
 ## Known issues
 * In Firefox, images won't be shown after resizing the browser. Click on the appropriate image button to re-display the
 image.
