@@ -13,7 +13,6 @@ import javax.persistence.Id
  * @see         javax.persistence.GeneratedValue
  * @see         javax.persistence.GenerationType
  * @see         javax.persistence.Id
- * @version   	1.0
  */
 @Entity
 class Progressive {

@@ -22,7 +22,6 @@ import org.springframework.web.servlet.ModelAndView
  * @see         org.springframework.web.bind.annotation.GetMapping
  * @see         org.springframework.web.bind.annotation.RequestMapping
  * @see         org.springframework.web.servlet.ModelAndView
- * @version     1.0
  */
 @Controller
 class ImageController {

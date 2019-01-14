@@ -9,7 +9,6 @@ import java.io.File
  * @author      Markus Graf
  * @see         javax.imageio.ImageIO
  * @see         java.io.File
- * @version     1.0
  */
 
 class Metadata {

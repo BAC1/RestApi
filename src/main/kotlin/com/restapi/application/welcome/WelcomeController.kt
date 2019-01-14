@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping
  * @see         org.slf4j.LoggerFactory
  * @see         org.springframework.stereotype.Controller
  * @see         org.springframework.web.bind.annotation.GetMapping
- * @version     1.0
  */
 @Controller
 class WelcomeController {

@@ -8,7 +8,6 @@ import org.springframework.data.repository.CrudRepository
  *
  * @author  	Markus Graf
  * @see     	org.springframework.data.repository.CrudRepository
- * @version   	1.0
  */
 
 interface ProgressiveRepository : CrudRepository<Progressive, Int>

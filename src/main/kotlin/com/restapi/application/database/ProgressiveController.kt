@@ -37,7 +37,6 @@ import javax.servlet.http.HttpServletResponse
  * @see         java.util.java.util.Properties
  * @see         javax.servlet.http.HttpServletRequest
  * @see         javax.servlet.http.HttpServletResponse
- * @version     1.0
  */
 
 @Controller

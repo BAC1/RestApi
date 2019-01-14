@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest
  * @see         javax.servlet.http.HttpServletRequest
  * @see         javax.imageio.ImageIO
  * @see         java.io.File
- * @version     1.0
  */
 
 @Controller
