@@ -57,7 +57,7 @@ class ProgressiveController {
     fun addAllProgressiveImagesOnStartupToDatabase() {
         logger.info("Application started || Load progressive images")
         val pathOfCurrentDirectory = System.getProperty("user.dir")
-        val pathToProgressiveImages = "$pathOfCurrentDirectory\\src\\main\\resources\\images\\progressive\\"
+        val pathToProgressiveImages = "$pathOfCurrentDirectory/src/main/resources/images/progressive/"
     
         progressiveRepository!!.deleteAll()
 

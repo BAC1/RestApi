@@ -36,25 +36,9 @@
             <div class="jumbotron" >
                 <h1 class="text-center">Here you see all available Progressive images</h1>
 
-                <button class="btn btn-primary" onclick="myFunction(this)">
-                    [[${modelAndView.model.var1}]]
-                </button>
-
-                <button class="btn btn-primary" onclick="myFunction(this)">
-                    [[${modelAndView.model.var2}]]
-                </button>
-
-                <button class="btn btn-primary" onclick="myFunction(this)">
-                    [[${modelAndView.model.var3}]]
-                </button>
-
-                <button class="btn btn-primary" onclick="myFunction(this)">
-                    [[${modelAndView.model.var4}]]
-                </button>
-
-                <button class="btn btn-primary" onclick="myFunction(this)">
-                    [[${modelAndView.model.var5}]]
-                </button>
+                <span th:each="image : ${modelAndView.model.images}" >
+                    <button class="btn btn-primary" onclick="myFunction(this)">[[${image.name}]]</button>
+                </span>
 
                 <p class="text-center"><a class="btn btn-primary" href="/"></i>Back</a></p>
 

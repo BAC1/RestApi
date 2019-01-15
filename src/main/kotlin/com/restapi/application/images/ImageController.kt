@@ -42,46 +42,8 @@ class ImageController {
         logger.warn("Url '/showAllImages' requested")
         val images = progressiveRepository!!.findAll()
     
-        addImagesToModel(
-                modelAndView = modelAndView,
-                images = images
-        )
-    
-        setDefaultValuesForNonUsedThymeleafVariables(
-                modelAndView = modelAndView,
-                images = images
-        )
+        modelAndView.addObject("images", images)
     
         return "images"
-    }
-    
-    /**
-     * Adds the given images to the "ModelAndView" object.
-     *
-     * @param   images          images that shall be added to the "ModelAndView" object
-     * @param   modelAndView    object to which the given images shall be added
-     */
-    private fun addImagesToModel(modelAndView: ModelAndView, images: MutableIterable<Progressive>) {
-        for ((index, image) in images.withIndex()) {
-            modelAndView.addObject("var${index + 1}", image.getName())
-        }
-    }
-    
-    /**
-     * Fills unused Thymeleaf variables in the html file with empty strings. Un-instantiated variables leads to an
-     * Exception in the Thymeleaf framework.
-     *
-     * @param   images          set of iterable images that shall be added to the "ModelAndView" object
-     * @param   modelAndView    object to which the given images shall be added
-     */
-    private fun setDefaultValuesForNonUsedThymeleafVariables(modelAndView: ModelAndView, images: MutableIterable<Progressive>) {
-        if (images.count() < 5) {
-            var count = images.count() + 1
-        
-            while (count < 6) {
-                modelAndView.addObject("var$count", "")
-                count++
-            }
-        }
     }
 }
