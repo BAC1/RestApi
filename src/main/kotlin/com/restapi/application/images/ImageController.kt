@@ -1,7 +1,6 @@
 package com.restapi.application.images
 
 import com.restapi.application.database.Progressive
-import com.restapi.application.database.ProgressiveController
 import com.restapi.application.database.ProgressiveRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,11 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.servlet.ModelAndView
 
 /**
- * This controller handles incoming http requests for displaying images
+ * This controller handles incoming http requests for returning an html page that displayes all available progressive
+ * images.
  *
  * @author      Markus Graf
  * @see         com.restapi.application.database.Progressive
- * @see         com.restapi.application.database.ProgressiveController
  * @see         com.restapi.application.database.ProgressiveRepository
  * @see         org.slf4j.LoggerFactory
  * @see         org.springframework.beans.factory.annotation.Autowired
@@ -31,11 +30,11 @@ class ImageController {
     private var progressiveRepository: ProgressiveRepository? = null
     
     /**
-     * Returns the html file with links to all progressive images saved in the data base as response to the browser when
-     * requesting the url "localhost:8080/showAllImages" and "127.0.0.1:8080/showAllImages"
+     * Returns a html file as response to the browser when requesting the url "localhost:8080/showAllImages" and
+     * "127.0.0.1:8080/showAllImages". The html file contains links to all progressive images saved in the database.
      *
      * @param   modelAndView   holder for both Model and View in the web MVC framework
-     * @return  html file name with links to all progressive images saved in the data base
+     * @return  html file name
      * @see     org.springframework.web.servlet
      */
     @GetMapping(value = ["/showAllImages"])
@@ -57,7 +56,7 @@ class ImageController {
     }
     
     /**
-     * Adds the given images to the given "ModelAndView" object
+     * Adds the given images to the "ModelAndView" object.
      *
      * @param   images          images that shall be added to the "ModelAndView" object
      * @param   modelAndView    object to which the given images shall be added
@@ -69,8 +68,8 @@ class ImageController {
     }
     
     /**
-     * Fills unused Thymeleaf variables in the returned html file with empty strings due to un-instantiated variables
-     * leads to an Exception in the Thymeleaf framework
+     * Fills unused Thymeleaf variables in the html file with empty strings. Un-instantiated variables leads to an
+     * Exception in the Thymeleaf framework.
      *
      * @param   images          set of iterable images that shall be added to the "ModelAndView" object
      * @param   modelAndView    object to which the given images shall be added

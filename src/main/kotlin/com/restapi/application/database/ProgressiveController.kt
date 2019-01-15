@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 /**
- * This controller handles incoming http requests and "ApplicationReady" events for loading progressive images
+ * This controller handles incoming http requests and "ApplicationReady" events for loading progressive images.
  *
  * @author      Markus Graf
  * @see         com.restapi.application.devices.Devices
@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletResponse
  * @see         javax.servlet.http.HttpServletRequest
  * @see         javax.servlet.http.HttpServletResponse
  */
-
 @Controller
 @RequestMapping(path=["/progressive"])
 class ProgressiveController {
@@ -49,7 +48,7 @@ class ProgressiveController {
     
     /**
      * Adds all images in the resource folder "images/progressive" to the database when the "ApplicationReady" event is
-     * thrown
+     * thrown.
      *
      * @exception  IOException  if e.g. <code>pathname</code> argument is <code>null</code>
      */
@@ -74,12 +73,12 @@ class ProgressiveController {
     /**
      * Returns the requested JPEG image as byte array over the output stream of the response object.
      *
-     * The desired JPEG image is requested by calling the url "localhost:8080/loadImage" or "127.0.0.1:8080/loadImage",
-     * followed by the <code>fileName</code> of the JPEG file and the <code>width</code> of the device display
-     * (in pixel) that sends the http request. Depending on the device display, bytes at the end of the image byte
-     * array will be dumped before the array is sent over the output stream. Due to the progressive file format, the
-     * JPEG file can still be displayed (the quality depends on the amount of dumped bytes). The JPEG file won't be
-     * resized.
+     * The desired JPEG image is requested by calling the url "localhost:8080/progressive/loadImage/" or
+     * "127.0.0.1:8080/progressive/loadImage/", followed by the <code>fileName</code> of the JPEG file and the
+     * <code>width</code> of the device display (in pixel) that sends the http request. Depending on the device display,
+     * bytes at the end of the progressive-encoded image byte array will be dumped before the array is sent over the
+     * output stream. Due to the progressive encoding, the JPEG file can still be displayed. The quality depends on the
+     * amount of the dumped bytes.
      *
      * @param   request                 http request sent by browser
      * @param   response                response object provided by the http request
@@ -137,12 +136,13 @@ class ProgressiveController {
     /**
      * Depending on the requesting device type (Mobile, Tablet. Desktop), bytes at the end of the image byte array
      * will be dumped or not. Returns a new byte array with the remaining bytes of the JPEG image. The scale factor of
-     * the remaining bytes in the image array can be be configured in the "device.properties" file in the resource
-     * folder.
+     * the remaining bytes in the image array can be be configured in the "device.properties" property file in the
+     * resource folder.
      *
      * @param   media                       image byte array
-     * @throws  IOException                 if an error occurred when reading from the input stream or the file <tt>uri</tt> is <tt>null</tt>.
-     * @throws  IllegalArgumentException    if the input stream contains a malformed Unicode escape sequence.
+     * @throws  IOException                 if an error occurred when reading from the input stream or the file
+     *                                      <tt>uri</tt> is <tt>null</tt>
+     * @throws  IllegalArgumentException    if the input stream contains a malformed Unicode escape sequence
      * @return  new image byte array optimized for the appropriate device type
      */
     private fun refactorByteArray(media: ByteArray, deviceType: Devices): ByteArray {
@@ -160,7 +160,7 @@ class ProgressiveController {
     }
     
     /**
-     * Creates a file of the given JPEG filename and returns the file as byte array
+     * Creates a file of the given JPEG filename and returns it as byte array.
      *
      * @param   fileName                JPEG file name
      * @throws  IOException             If the <code>pathname</code> argument is <code>null</code>
@@ -175,10 +175,11 @@ class ProgressiveController {
     }
     
     /**
-     * Loads all device properties from file "device.properties" in the resource folder
+     * Loads all device properties from the property file "device.properties" in the resource folder.
      *
-     * @throws  IOException                 if an error occurred when reading from the input stream or the file <tt>uri</tt> is <tt>null</tt>.
-     * @throws  IllegalArgumentException    if the input stream contains a malformed Unicode escape sequence.
+     * @throws  IOException                 if an error occurred when reading from the input stream or the file
+     *                                      <tt>uri</tt> is <tt>null</tt>
+     * @throws  IllegalArgumentException    if the input stream contains a malformed Unicode escape sequence
      * @return  device properties
      */
     @Throws(IOException::class, IllegalArgumentException::class)
@@ -194,11 +195,11 @@ class ProgressiveController {
     
     /**
      * Depending on the pre-configured device sizes in the file "device.properties" in the resource folder, the
-     * device type will be defined with the given <code>width</code> of the device display (in pixel)
+     * device type will be defined with the given <code>width</code> of the device display (in pixel).
      *
      * @param   width                       device's display width (in pixel)
-     * @throws  IOException                 if an error occurred when reading from the input stream.
-     * @throws  IllegalArgumentException    if the input stream contains a malformed Unicode escape sequence.
+     * @throws  IOException                 if an error occurred when reading from the input stream
+     * @throws  IllegalArgumentException    if the input stream contains a malformed Unicode escape sequence
      * @return  device type (Mobile, Tablet, Desktop)
      */
     @Throws(IOException::class, IllegalArgumentException::class)
@@ -218,7 +219,7 @@ class ProgressiveController {
     }
     
     /**
-     * Adds a given JPEG file with its metadata to the database
+     * Adds the byte array of a given JPEG file with its metadata to the database.
      *
      * @param  file  JPEG file to be added to the database
      */

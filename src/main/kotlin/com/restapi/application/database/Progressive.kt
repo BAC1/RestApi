@@ -6,7 +6,7 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 
 /**
- * This entity creates a table for progressive images that holds the image file and all related metadata
+ * This entity creates a database table for progressive images that holds the image file and all related metadata.
  *
  * @author  	Markus Graf
  * @see         javax.persistence.Entity
@@ -18,7 +18,7 @@ import javax.persistence.Id
 class Progressive {
     
     /**
-     * Automatic generated entity Id in the table
+     * Automatic generated entity Id in the database table.
      *
      */
     @Id
@@ -26,7 +26,7 @@ class Progressive {
     private val id: Int? = null
     
     /**
-     * Filename of the JPEG file
+     * Filename of the JPEG file.
      *
      * @return  filename
      */
@@ -37,7 +37,7 @@ class Progressive {
     }
     
     /**
-     * Absolute path of the JPEG file
+     * Absolute path of the JPEG file.
      *
      * @return  absolute path
      */
@@ -48,9 +48,9 @@ class Progressive {
     }
     
     /**
-     * File size of the JPEG file in Bytes
+     * File size of the JPEG file.
      *
-     * @return  file size
+     * @return  file size (in bytes)
      */
     private var size: Int? = null
     fun getSize(): Int? = size
@@ -59,9 +59,9 @@ class Progressive {
     }
     
     /**
-     * Width of the JPEG file in pixel
+     * Width of the JPEG file.
      *
-     * @return  width
+     * @return  width (in pixel)
      */
     private var width: Int? = null
     fun getWidth(): Int? = width
@@ -70,9 +70,9 @@ class Progressive {
     }
     
     /**
-     * Height of the JPEG file in pixel
+     * Height of the JPEG file.
      *
-     * @return  height
+     * @return  height (in pixel)
      */
     private var height: Int? = null
     fun getHeight(): Int? = height
@@ -81,9 +81,9 @@ class Progressive {
     }
     
     /**
-     * Extension of the JPEG file (<code>jpg</code> or <code>jpeg</code>)
+     * Extension of the JPEG file.
      *
-     * @return  extension
+     * @return  extension (<code>jpg</code> or <code>jpeg</code>)
      */
     private var extension: String? = null
     fun getExtension(): String? = extension

@@ -9,7 +9,7 @@ import javax.servlet.RequestDispatcher
 import javax.servlet.http.HttpServletRequest
 
 /**
- * This controller handles incoming http requests for error messages
+ * This controller handles incoming http requests for error messages.
  *
  * @author      Markus Graf
  * @see         com.restapi.application.database.ProgressiveController
@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletRequest
  * @see         javax.imageio.ImageIO
  * @see         java.io.File
  */
-
 @Controller
 class MyErrorController: ErrorController {
     private val logger = LoggerFactory.getLogger(MyErrorController::class.java)
@@ -31,9 +30,9 @@ class MyErrorController: ErrorController {
     fun MyErrorController() {}
     
     /**
-     * Returns the html file of the appropriate error code as response to the browser when requesting an unknown url of
-     * the domain "localhost:8080" and "127.0.0.1:8080" or when an error occurred by requesting a legit url
-     * (e.g. Internal Server Error)
+     * Returns the html file as response to the browser when requesting an unknown url of the domain "localhost:8080"
+     * and "127.0.0.1:8080" or when an error occurred by requesting a legit url (e.g. Internal Server Error). The
+     * html file contains an error message for the appropriate error code.
      *
      * @param   request   http request sent by browser
      * @return  html file name for appropriate error code
@@ -60,7 +59,7 @@ class MyErrorController: ErrorController {
     override fun getErrorPath(): String = "/error"
     
     /**
-     * Retrieves the error code of the given http request
+     * Retrieves the error code of the incoming http request.
      *
      * @param   request     http request for which an error occurred
      * @param   errorCode   actual error code of the given request
@@ -69,10 +68,10 @@ class MyErrorController: ErrorController {
     private fun getAttributeOfErrorCode(request: HttpServletRequest, errorCode: String): Any? = request.getAttribute(errorCode)
     
     /**
-     * Converts a set of digits from <code>String</code> to <code>Int</code>
+     * Converts a set of digits from <code>String</code> to <code>Int</code>.
      *
      * @param       errorCode               error code as set of digits to be converted
-     * @exception   NumberFormatException   if the string cannot be parsed as an integer.
+     * @exception   NumberFormatException   if the string cannot be parsed as an integer
      * @return      error status code of the given request, or <code>0</code> if the given attribute is <code>null</code>
      */
     private fun getErrorCodeAsInteger(errorCode: Any?): Int {
@@ -91,7 +90,7 @@ class MyErrorController: ErrorController {
     }
     
     /**
-     * Returns the html file name of the appropriate error code
+     * Returns the html file name of the appropriate error code.
      *
      * @param   errorCode    http error code for which a error page shall be displayed
      * @return  html file name of the appropriate error code, or <code>error</code> if the given error code isn't
