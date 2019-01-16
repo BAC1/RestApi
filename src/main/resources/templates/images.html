@@ -41,25 +41,9 @@
                     request it with optimized file size depending on your browser size. The requested image will
                     automatically be re-sized by your browser in order to remain display it with high quality.</p>
 
-                <button class="btn btn-primary" onclick="myFunction(this)">
-                    [[${modelAndView.model.var1}]]
-                </button>
-
-                <button class="btn btn-primary" onclick="myFunction(this)">
-                    [[${modelAndView.model.var2}]]
-                </button>
-
-                <button class="btn btn-primary" onclick="myFunction(this)">
-                    [[${modelAndView.model.var3}]]
-                </button>
-
-                <button class="btn btn-primary" onclick="myFunction(this)">
-                    [[${modelAndView.model.var4}]]
-                </button>
-
-                <button class="btn btn-primary" onclick="myFunction(this)">
-                    [[${modelAndView.model.var5}]]
-                </button>
+                <span th:each="image : ${modelAndView.model.images}" >
+                    <button class="btn btn-primary" onclick="myFunction(this)">[[${image.name}]]</button>
+                </span>
 
                 <p class="text-center">
                     <a class="btn btn-primary" href="/"></i>Back</a>

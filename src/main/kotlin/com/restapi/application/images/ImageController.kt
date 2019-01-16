@@ -43,15 +43,7 @@ class ImageController {
         logger.info("Url '/showAllImages' requested")
     
         try {
-            addImagesToModel(
-                    modelAndView = modelAndView,
-                    images = images
-            )
-    
-            setDefaultValuesForNonUsedThymeleafVariables(
-                    modelAndView = modelAndView,
-                    images = images
-            )
+            modelAndView.addObject("images", images)
         } catch (e: Exception) {
             logger.error("Error while manipulating model and view object!\n\t${e.message}")
         }

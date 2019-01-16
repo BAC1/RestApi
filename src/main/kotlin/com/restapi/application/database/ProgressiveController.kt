@@ -54,7 +54,7 @@ class ProgressiveController {
     @EventListener(ApplicationReadyEvent::class)
     fun addAllProgressiveImagesOnStartupToDatabase() {
         val pathOfCurrentDirectory = System.getProperty("user.dir")
-        val pathToProgressiveImages = "$pathOfCurrentDirectory\\src\\main\\resources\\images\\progressive\\"
+        val pathToProgressiveImages = "$pathOfCurrentDirectory/src/main/resources/images/progressive/"
 	
 		logger.info("Add progressive JPEG's to database")
 		
