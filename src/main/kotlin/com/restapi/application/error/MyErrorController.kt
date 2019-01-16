@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest
  * @see         java.io.File
  */
 @Controller
-class MyErrorController: ErrorController {
+class MyErrorController : ErrorController {
     private val logger = LoggerFactory.getLogger(MyErrorController::class.java)
     
     fun MyErrorController() {}

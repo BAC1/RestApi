@@ -22,27 +22,27 @@ Gradle is required for the dependency management. Carry out the following steps:
 * Install Gradle
 
 ```
-sudo apt-get install gradle
+$ sudo apt-get install gradle
 ```
 
 * Make sure Gradle 4.0 or higher is installed. Check your Gradle version as follows:
 
 ```
-gradle -version
+$ gradle -version
 ```
 
 * If Gradle version 4.0 or lower is installed, update it as follows
 
 ```
-sudo add-apt-repository ppa:cwchien/gradle
-sudo apt-get update 
-sudo apt-get upgrade gradle
+$ sudo add-apt-repository ppa:cwchien/gradle
+$ sudo apt-get update 
+$ sudo apt-get upgrade gradle
 ```
 
 * Create the gradle wrapper with any Gradle version higher than 4.0
 
 ```
-gradle wrapper --gradle-version <Gradle version>
+$ gradle wrapper --gradle-version <Gradle version>
 ```
 
 For the latest gradle versions see [here](https://services.gradle.org/distributions/).
@@ -55,17 +55,17 @@ Run the following commands in the command line of Intellij:
 
 * Check your JAVA_HOME variable
 ```
-echo $JAVA_HOME
+$ echo $JAVA_HOME
 ```
 
 * Change your JAVA_HOME path if not Java 8 is selected
 ```
-export JAVA_HOME=/*path to Java 8 folder*/
+$ export JAVA_HOME=/*path to Java 8 folder*/
 ```
 
 #### MySQL
-In order to run this project, an installed and running MySQL server is required. This project have been tested 
-with the "MySQL 8 Server" on Windows and Linux. 
+In order to run this project, an installed and running MySQL server is required. This project have been tested with the 
+"MySQL 8 Server" on Windows and Linux. 
 
 ##### Download
 
@@ -87,18 +87,17 @@ password of the previously created MySQL user in the properties **spring.datasou
 ### Install project
 In order to open this project in Intellij, the following three methods are possible:
 
-* Retrieve the project into Intellij via **VCS -> git -> clone...** and enter the url 
-**git@github.com:BAC1/RestApi.git**.
+* Retrieve the project into Intellij via **VCS -> git -> clone...** and enter the url **git@github.com:BAC1/RestApi.git**.
 
 * Import or open the downloaded project as Gradle project in Intellij.
 
 * Checkout the project via the command line:
 ```
-git checkout git@github.com:BAC1/RestApi.git
+$ git checkout git@github.com:BAC1/RestApi.git
 ```
 
-**Note**: In order to pull or push via git, the public SSH key must be saved in the git repository. For assistance,
-see **Authors** below.
+**Note**: In order to pull or push via git, the public SSH key must be saved in the git repository. For assistance, see 
+**Authors** below.
 
 ### Run Project with Gradle
 
@@ -109,8 +108,8 @@ This project can be executed with Gradle in two ways.
 1. Open the "Gradle Project" tool at **View -> Tool Windows -> Gradle**.
 2. Right-click on the project node **RestApi** and select **Refresh dependencies**. Wait until all dependencies have 
 been loaded. The current status is shown in the footer of Intellij.
-3. Right-click on the project node **RestApi** and select **Refresh Gradle project**. Wait until the project have 
-been updated. The current status is shown in the footer of Intellij.
+3. Right-click on the project node **RestApi** and select **Refresh Gradle project**. Wait until the project have been 
+updated. The current status is shown in the footer of Intellij.
 4. Right-click on file **Application.kt** and click on **Run 'com.restapi.application**
 5. Open your browser and enter the link **http://localhost:8080/** or **http://127.0.0.1:8080/**.
 
@@ -121,14 +120,14 @@ Run the following commands in the command line of Intellij:
 
 * Refresh the dependencies:
 ```
-./gradlew --refresh-dependencies
+$ ./gradlew --refresh-dependencies
 ```
 
 **Note**: If the command './gradlew' isn't available, see **Gradle** in chapter **Prerequisites** above.
 
 * Run this project
 ```
-gradle bootRun
+$ gradle bootRun
 ```
 
 * Open your browser and enter the link **http://localhost:8080/** or **http://127.0.0.1:8080/**. 
@@ -139,12 +138,31 @@ gradle bootRun
 
 * Run this command in the command line of Intellij
 ```
-./gradlew dokka
+$ ./gradlew dokka
 ```
 
 The JavaDoc is exported as html and saved at **/build/javadoc/**.
 
 **Note**: If the command './gradlew' isn't available, see **Gradle** in chapter **Prerequisites** above.
+
+## Code formatter
+
+### How to run ktlint and the formatter?
+
+Ktlint is an anti-bikeshedding Kotlin linter with built-in formatter. For more information see 
+[here](https://ktlint.github.io/).
+
+* Show all code violations in terminal:
+```
+$ ./gradlew ktlint  (for Linux user)
+$ gradlew ktlint    (for Windows user)
+```
+
+* Apply Kotlin code rules automatically
+```
+$ ./gradlew ktlintFormat  (for Linux user)
+$ gradlew ktlintFormat    (for Windows user)
+```
 
 ## Known issues
 * In Firefox, images won't be shown after resizing the browser. Click on the appropriate image button to re-display the
@@ -161,14 +179,13 @@ Click on the image button twice or click on another image button first.
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. The current release version is defined in the **build.gradle** 
-file. All available releases can be found on our [GitHub repository](https://github.com/BAC1/RestApi/releases). 
+We use [SemVer](http://semver.org/) for versioning. The current release version is defined in the **build.gradle** file. 
+All available releases can be found on our [GitHub repository](https://github.com/BAC1/RestApi/releases). 
 
 ## License
 
 This project is not licensed.
 
-
 ## Authors
 
-* **Markus Graf**           <fhs39198@fh-salzburg.ac.at>
+* **Markus Graf**   <fhs39198@fh-salzburg.ac.at>

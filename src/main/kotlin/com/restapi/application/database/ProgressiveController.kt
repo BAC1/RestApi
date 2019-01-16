@@ -39,7 +39,7 @@ import javax.servlet.http.HttpServletResponse
  * @see         javax.servlet.http.HttpServletResponse
  */
 @Controller
-@RequestMapping(path=["/progressive"])
+@RequestMapping(path = ["/progressive"])
 class ProgressiveController {
     private val logger = LoggerFactory.getLogger(ProgressiveController::class.java)
 
