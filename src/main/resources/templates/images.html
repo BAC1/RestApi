@@ -27,18 +27,19 @@
 
             .content {
                 position: absolute;
-                top: 0; bottom: 0; right: 0; left: 0;
+                margin: auto;
+                left: 1%;
             }
         </style>
     </head>
     <body>
         <div class="container">
-            <p>On this page, you find all progressive-encoded JPEG's available on the server. Select an image and
-                request it with optimized file size depending on your browser size. The requested image will
-                automatically be re-sized by your browser in order to remain display it with high quality.</p>
-
             <div class="jumbotron" >
-                <h1 class="text-center">Here you see all available Progressive images</h1>
+                <h1 class="text-center">Progressive-Encoded JPEG's</h1>
+
+                <p>On this page, you find all progressive-encoded JPEG's available on the server. Select an image and
+                    request it with optimized file size depending on your browser size. The requested image will
+                    automatically be re-sized by your browser in order to remain display it with high quality.</p>
 
                 <button class="btn btn-primary" onclick="myFunction(this)">
                     [[${modelAndView.model.var1}]]
@@ -84,14 +85,14 @@
                     }
                 </script>
             </div>
+        </div>
 
-            <div class="wrapper">
-                <div class="content">
-                    <p id ="imageWidth"></p>
-                    <p id ="imageHeight"></p>
-                    <p id ="fileSize"></p>
-                    <img id="progressiveImage" src="">
-                </div>
+        <div class="wrapper">
+            <div class="content">
+                <p id ="imageWidth"></p>
+                <p id ="imageHeight"></p>
+                <p id ="fileSize"></p>
+                <img id="progressiveImage" src="">
             </div>
         </div>
     </body>

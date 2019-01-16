@@ -2,9 +2,7 @@ package com.restapi.application.metadata
 
 import com.restapi.application.devices.Devices
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.PropertySource
+import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.io.IOException
 import java.lang.IllegalArgumentException
 
@@ -14,23 +12,13 @@ import java.lang.IllegalArgumentException
  * @author      Markus Graf
  * @see 		com.restapi.application.devices.Devices
  * @see 		org.slf4j.LoggerFactory
- * @see 		org.springframework.beans.factory.annotation.Value
- * @see 		org.springframework.context.annotation.Configuration
- * @see 		org.springframework.context.annotation.PropertySource
+ * @see 		org.springframework.context.annotation.AnnotationConfigApplicationContext
  * @see 		java.io.IOException
  * @see 		java.lang.IllegalArgumentException
  */
-@Configuration
-@PropertySource("classpath:device.properties")
 class MediaQuery {
 	private val logger = LoggerFactory.getLogger(MediaQuery::class.java)
-	
-	@Value("\${mobile.display.width}")
-	private val mobileDisplayWidth: Int = 0
-	
-	@Value("\${tablet.display.width}")
-	private val tabletDisplayWidth: Int = 0
-	
+
 	/**
 	 * Depending on the pre-configured device sizes in the file "device.properties" in the resource folder, the
 	 * device type will be defined with the given <code>width</code> of the device display (in pixel).
@@ -39,10 +27,14 @@ class MediaQuery {
 	 * @return  device type (Mobile, Tablet, Desktop)
 	 */
 	fun get(width: String): Devices {
+		val context = AnnotationConfigApplicationContext()
+		context.scan("com.restapi.application.metadata")
+		context.refresh()
+
 		try {
-			val deviceType = if (width.toInt() <= mobileDisplayWidth) {
+			val deviceType = if (width.toInt() <= context.getBean(MediaQueryBeans::class.java).getMobileWidth()) {
 				Devices.Mobile
-			} else if (width.toInt() <= tabletDisplayWidth) {
+			} else if (width.toInt() <= context.getBean(MediaQueryBeans::class.java).getTabletWidth()) {
 				Devices.Tablet
 			} else {
 				Devices.Desktop
@@ -51,11 +43,12 @@ class MediaQuery {
 			logger.info("Device type '$deviceType' with width $width px detected")
 			return deviceType
 		} catch (e: IOException) {
-			logger.error("IOException occurred while reading 'device.properties' file! Return value 'Devices.Desktop'")
+			logger.error("IOException occurred while reading 'device.properties' file! Return value " +
+					"'Devices.Desktop' ...\n\t${e.message}")
 			return Devices.Desktop
 		} catch (e: IllegalArgumentException) {
 			logger.error("IllegalArgumentException occurred while reading 'device.properties' file! Return value " +
-					"'Devices.Desktop'")
+					"'Devices.Desktop' ...\n\t${e.message}")
 			return Devices.Desktop
 		}
 	}

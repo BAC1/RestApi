@@ -2,10 +2,8 @@ package com.restapi.application.database
 
 import com.restapi.application.devices.Devices
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.PropertySource
 import java.io.IOException
+import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 /**
  * This class returns a re-sized byte array of the progressive-encoded JPEG.
@@ -13,25 +11,12 @@ import java.io.IOException
  * @author      Markus Graf
  * @see 		com.restapi.application.devices.Devices
  * @see 		org.slf4j.LoggerFactory
- * @see 		org.springframework.beans.factory.annotation.Value
- * @see 		org.springframework.context.annotation.Configuration
- * @see 		org.springframework.context.annotation.PropertySource
  * @see 		java.io.IOException
+ * @see 		org.springframework.context.annotation.AnnotationConfigApplicationContext
  */
-@Configuration
-@PropertySource("classpath:device.properties")
 class ProgressiveConfiguration {
 	private val logger = LoggerFactory.getLogger(ProgressiveConfiguration::class.java)
-	
-	@Value("\${mobile.image.load.scale}")
-	private val mobileLoadScale: Double = 0.0
-	
-	@Value("\${tablet.image.load.scale}")
-	private val tabletLoadScale: Double = 0.0
-	
-	@Value("\${desktop.image.load.scale}")
-	private val desktopLoadScale: Double = 0.0
-	
+
 	/**
 	 * Depending on the requesting device type (Mobile, Tablet. Desktop), bytes at the end of the image byte array
 	 * will be dumped or not. Returns a new byte array with the remaining bytes of the JPEG image. The scale factor of
@@ -42,20 +27,24 @@ class ProgressiveConfiguration {
 	 * @return  new image byte array optimized for the appropriate device type
 	 */
 	fun refactorByteArray(media: ByteArray, deviceType: Devices): ByteArray {
+		val context = AnnotationConfigApplicationContext()
+		context.scan("com.restapi.application.database")
+		context.refresh()
+
 		val size = try {
 			when (deviceType) {
-				Devices.Mobile -> mobileLoadScale
-				Devices.Tablet -> tabletLoadScale
-				Devices.Desktop -> desktopLoadScale
+				Devices.Mobile -> context.getBean(ProgressiveConfigurationBeans::class.java).getMobileScale()
+				Devices.Tablet -> context.getBean(ProgressiveConfigurationBeans::class.java).getTabletScale()
+				Devices.Desktop -> context.getBean(ProgressiveConfigurationBeans::class.java).getDesktopScale()
 			}
 		} catch (e: IOException) {
 			logger.error("IOException occurred while reading 'device.properties' file! Return value of property " +
-					"'desktop.image.load.scale'")
-			desktopLoadScale
+					"'desktop.image.load.scale' ...\n\t${e.message}")
+			context.getBean(ProgressiveConfigurationBeans::class.java).getDesktopScale()
 		} catch (e: java.lang.IllegalArgumentException) {
 			logger.error("IllegalArgumentException occurred while reading 'device.properties' file! Return value of " +
-					"property 'desktop.image.load.scale'")
-			desktopLoadScale
+					"property 'desktop.image.load.scale' ...\n\t${e.message}")
+			context.getBean(ProgressiveConfigurationBeans::class.java).getDesktopScale()
 		}
 		
 		logger.info("Device type: $deviceType || Image load scale: $size")

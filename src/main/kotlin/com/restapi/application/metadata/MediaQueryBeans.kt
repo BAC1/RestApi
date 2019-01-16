@@ -1,0 +1,44 @@
+package com.restapi.application.metadata
+
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.PropertySource
+import org.springframework.core.env.Environment
+
+/**
+ * This class loads the max width properties for mobile and tablet devices
+ *
+ * @author      Markus Graf
+ * @see 		org.slf4j.LoggerFactory
+ * @see 		org.springframework.beans.factory.annotation.Autowired
+ * @see 		org.springframework.context.annotation.Bean
+ * @see 		org.springframework.context.annotation.Configuration
+ * @see 		org.springframework.context.annotation.PropertySource
+ * @see 		org.springframework.core.env.Environment
+ */
+@Configuration
+@PropertySource(value = ["classpath:device.properties"])
+class MediaQueryBeans {
+	private val logger = LoggerFactory.getLogger(MediaQueryBeans::class.java)
+
+	@Autowired
+	lateinit var env: Environment
+
+	/**
+	 * This @Bean loads the max width for mobile devices
+	 *
+	 * @return  device type 'mobile'
+	 */
+	@Bean
+	fun getMobileWidth(): Int = env.getProperty("mobile.display.width")!!.toInt()
+
+	/**
+	 * This @Bean loads the max width for tablet devices
+	 *
+	 * @return  device type 'tablet'
+	 */
+	@Bean
+	fun getTabletWidth(): Int = env.getProperty("tablet.display.width")!!.toInt()
+}

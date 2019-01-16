@@ -117,7 +117,7 @@ class ProgressiveController {
 				}
             }
         } catch (e: Exception) {
-            logger.error("Failed to load image $fileName!\n\t${e.message}")
+            logger.error("Error while loading image $fileName!\n\t${e.message}")
         }
 		
         return response.outputStream.write(media)
