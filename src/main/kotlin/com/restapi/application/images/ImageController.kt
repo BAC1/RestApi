@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView
  * This controller handles incoming http requests for returning an html page that displayes all available progressive
  * images.
  *
- * @author      Markus Graf
+ * @author      Markus Graf, Aysenur Akyldiz
  * @see         com.restapi.application.database.ProgressiveRepository
  * @see         org.slf4j.LoggerFactory
  * @see         org.springframework.beans.factory.annotation.Autowired
