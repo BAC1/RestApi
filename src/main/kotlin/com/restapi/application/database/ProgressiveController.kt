@@ -64,12 +64,14 @@ class ProgressiveController {
 			File(pathToProgressiveImages).listFiles().forEach {
 				if (it.extension == "jpeg" || it.extension == "jpg") {
 					addNewImageToDatabase(file = it)
+				} else {
+					logger.warn("File '${it.name}' with unsupported extension detected!")
 				}
 			}
 			
-			logger.info("All images in folder 'images/progressive' added to database")
+			logger.info("All JPEG's in folder 'images/progressive' added to database")
 		} catch (e: IOException) {
-			logger.error("Failed to load database!\n\t${e.message}")
+			logger.error("Error while loading JPEG's to database!\n\t${e.message}")
 		} catch (e: Exception) {
 			logger.error(e.message)
 		}

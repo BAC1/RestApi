@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <html>
     <head>
+        <meta name="author" content="Markus Graf, Aysenur Akyldiz">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
               integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -48,28 +49,28 @@
                 <p class="text-center">
                     <a class="btn btn-primary" href="/"></i>Back</a>
                 </p>
-
-                <script>
-                    function myFunction(obj) {
-                        var imageName = obj.innerHTML;
-                        var width = window.innerWidth;
-                        var link = 'http://localhost:8080/progressive/loadImage/' + imageName + '/' + width;
-                        document.getElementById('progressiveImage').src=link.replace(/\s/g, '');
-
-                        setTimeout(function() {
-                            var imageWidth = document.getElementById('progressiveImage').width;
-                            var imageHeight = document.getElementById('progressiveImage').height;
-
-                            document.getElementById('imageWidth').innerHTML = 'Width: ' + imageWidth + ' px';
-                            document.getElementById('imageHeight').innerHTML = 'Height: ' + imageHeight + ' px';
-
-                            var size = document.getElementById('progressiveImage').files[0].size;
-                            document.getElementById('fileSize').innerHTML = Math.round((size / 1024)).toString();
-                        }, 200)
-                    }
-                </script>
             </div>
         </div>
+
+        <script>
+            function myFunction(obj) {
+                var imageName = obj.innerHTML;
+                var width = window.innerWidth;
+                var link = 'http://localhost:8080/progressive/loadImage/' + imageName + '/' + width;
+                document.getElementById('progressiveImage').src=link.replace(/\s/g, '');
+
+                setTimeout(function() {
+                    var imageWidth = document.getElementById('progressiveImage').width;
+                    var imageHeight = document.getElementById('progressiveImage').height;
+
+                    document.getElementById('imageWidth').innerHTML = 'Width: ' + imageWidth + ' px';
+                    document.getElementById('imageHeight').innerHTML = 'Height: ' + imageHeight + ' px';
+
+                    var size = document.getElementById('progressiveImage').files[0].size;
+                    document.getElementById('fileSize').innerHTML = Math.round((size / 1024)).toString();
+                }, 200)
+            }
+        </script>
 
         <div class="wrapper">
             <div class="content">
