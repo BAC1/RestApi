@@ -24,7 +24,7 @@ class WelcomeController {
     
     @GetMapping("/")
     fun showWelcomePage(): String {
-        logger.warn("Welcome page requested")
+        logger.info("Welcome page requested")
         return "index"
     }
 }

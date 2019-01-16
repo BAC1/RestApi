@@ -19,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView
  * @see         org.springframework.beans.factory.annotation.Autowired
  * @see         org.springframework.stereotype.Controller
  * @see         org.springframework.web.bind.annotation.GetMapping
- * @see         org.springframework.web.bind.annotation.RequestMapping
  * @see         org.springframework.web.servlet.ModelAndView
  */
 @Controller
@@ -39,18 +38,23 @@ class ImageController {
      */
     @GetMapping(value = ["/showAllImages"])
     fun showImages(modelAndView: ModelAndView): String {
-        logger.warn("Url '/showAllImages' requested")
         val images = progressiveRepository!!.findAll()
     
-        addImagesToModel(
-                modelAndView = modelAndView,
-                images = images
-        )
+        logger.info("Url '/showAllImages' requested")
     
-        setDefaultValuesForNonUsedThymeleafVariables(
-                modelAndView = modelAndView,
-                images = images
-        )
+        try {
+            addImagesToModel(
+                    modelAndView = modelAndView,
+                    images = images
+            )
+    
+            setDefaultValuesForNonUsedThymeleafVariables(
+                    modelAndView = modelAndView,
+                    images = images
+            )
+        } catch (e: Exception) {
+            logger.error("Error while manipulating model and view object!\n\t${e.message}")
+        }
     
         return "images"
     }

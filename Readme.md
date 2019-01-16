@@ -60,7 +60,7 @@ $ echo $JAVA_HOME
 
 * Change your JAVA_HOME path if not Java 8 is selected
 ```
-$ export JAVA_HOME=/*path to Java 8 folder*/
+$ export JAVA_HOME=<path to Java 8 folder>
 ```
 
 #### MySQL
@@ -96,8 +96,8 @@ In order to open this project in Intellij, the following three methods are possi
 $ git checkout git@github.com:BAC1/RestApi.git
 ```
 
-**Note**: In order to pull or push via git, the public SSH key must be saved in the git repository. For assistance, see 
-**Authors** below.
+**Note**: In order to pull (via SSH connection) or push via git, the public SSH key must be saved in the git repository. 
+For assistance, see **Authors** below.
 
 ### Run Project with Gradle
 

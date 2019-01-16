@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
  * @see         org.springframework.boot.SpringApplication
  * @see         org.springframework.boot.autoconfigure.SpringBootApplication
  */
-
 @SpringBootApplication
 class Application
 
