@@ -1,6 +1,5 @@
 package com.restapi.application.images
 
-import com.restapi.application.database.Progressive
 import com.restapi.application.database.ProgressiveRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView
  * images.
  *
  * @author      Markus Graf
- * @see         com.restapi.application.database.Progressive
  * @see         com.restapi.application.database.ProgressiveRepository
  * @see         org.slf4j.LoggerFactory
  * @see         org.springframework.beans.factory.annotation.Autowired
