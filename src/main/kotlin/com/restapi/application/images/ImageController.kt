@@ -30,8 +30,9 @@ class ImageController {
      * Returns a html file as response to the browser when requesting the url "localhost:8080/showAllImages" and
      * "127.0.0.1:8080/showAllImages". The html file contains links to all progressive images saved in the database.
      *
-     * @param   modelAndView   holder for both Model and View in the web MVC framework
+     * @param   modelAndView    holder for both Model and View in the web MVC framework
      * @return  html file name
+     * @see		GetMapping      value = ["/showAllImages"]
      * @see     org.springframework.web.servlet
      */
     @GetMapping(value = ["/showAllImages"])

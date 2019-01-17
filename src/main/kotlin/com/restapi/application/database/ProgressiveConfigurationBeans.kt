@@ -1,6 +1,5 @@
 package com.restapi.application.database
 
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -11,7 +10,6 @@ import org.springframework.core.env.Environment
  * This class loads the scale factor properties
  *
  * @author      Markus Graf
- * @see 		org.slf4j.LoggerFactory
  * @see 		org.springframework.beans.factory.annotation.Autowired
  * @see 		org.springframework.context.annotation.Bean
  * @see 		org.springframework.context.annotation.Configuration
@@ -21,8 +19,7 @@ import org.springframework.core.env.Environment
 @Configuration
 @PropertySource(value = ["classpath:device.properties"])
 class ProgressiveConfigurationBeans {
-	private val logger = LoggerFactory.getLogger(ProgressiveConfigurationBeans::class.java)
-
+	
 	@Autowired
 	lateinit var env: Environment
 

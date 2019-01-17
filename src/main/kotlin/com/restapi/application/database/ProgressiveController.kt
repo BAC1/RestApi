@@ -49,7 +49,10 @@ class ProgressiveController {
     /**
      * Adds all images in the resource folder "images/progressive" to the database when the "ApplicationReady" event is
      * thrown.
-     */
+	 *
+	 * @throws  IOException				if e.g. <code>pathname</code> argument is <code>null</code>
+	 * @see		ApplicationReadyEvent	method is executed when application is running
+	 */
     @Throws(IOException::class)
     @EventListener(ApplicationReadyEvent::class)
     fun addAllProgressiveImagesOnStartupToDatabase() {
@@ -93,7 +96,8 @@ class ProgressiveController {
      * @param   width                   display width of the device that sent the http request
      * @throws  IOException             if e.g. <code>pathname</code> argument is <code>null</code>
      * @return  progressive image over the output stream of the response object
-     */
+	 * @see		RequestMapping#GET		value = ["/loadImage/{fileName}/{width}"]
+	 */
     @Throws(IOException::class)
     @RequestMapping(value = ["/loadImage/{fileName}/{width}"], method = [RequestMethod.GET])
     fun loadImage(
