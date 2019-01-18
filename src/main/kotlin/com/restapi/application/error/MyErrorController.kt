@@ -31,8 +31,9 @@ class MyErrorController : ErrorController {
      * and "127.0.0.1:8080" or when an error occurred by requesting a legit url (e.g. Internal Server Error). The
      * html file contains an error message for the appropriate error code.
      *
-     * @param   request   http request sent by browser
+     * @param   request         http request sent by browser
      * @return  html file name for appropriate error code
+     * @see		GetMapping      value = ["/error"]
      * @see     org.springframework.boot.web.servlet.error.ErrorController
      */
     @GetMapping(value = ["/error"])

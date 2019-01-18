@@ -65,9 +65,6 @@
 
                     document.getElementById('imageWidth').innerHTML = 'Width: ' + imageWidth + ' px';
                     document.getElementById('imageHeight').innerHTML = 'Height: ' + imageHeight + ' px';
-
-                    var size = document.getElementById('progressiveImage').files[0].size;
-                    document.getElementById('fileSize').innerHTML = Math.round((size / 1024)).toString();
                 }, 200)
             }
         </script>
@@ -76,7 +73,6 @@
             <div class="content">
                 <p id ="imageWidth"></p>
                 <p id ="imageHeight"></p>
-                <p id ="fileSize"></p>
                 <img id="progressiveImage" src="">
             </div>
         </div>

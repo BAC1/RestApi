@@ -147,18 +147,18 @@ The JavaDoc is exported as html and saved at **/build/javadoc/**.
 
 ## Code formatter
 
-### How to run ktlint and the formatter?
+### How to run Ktlint
 
 Ktlint is an anti-bikeshedding Kotlin linter with built-in formatter. For more information see 
 [here](https://ktlint.github.io/).
 
-* Show all code violations in terminal:
+* Check code style (it's also bound to "gradle check"):
 ```
 $ ./gradlew ktlint  (for Linux user)
 $ gradlew ktlint    (for Windows user)
 ```
 
-* Apply Kotlin code rules automatically
+* Fix code style deviations (runs built-in formatter):
 ```
 $ ./gradlew ktlintFormat  (for Linux user)
 $ gradlew ktlintFormat    (for Windows user)
@@ -176,6 +176,7 @@ Click on the image button twice or click on another image button first.
 * [Spring](https://spring.io/) - Application framework
 * [Gradle](https://gradle.org/) - Dependency Management
 * [MySQL](https://www.mysql.com/) - Database connector API for Java
+* [Ktlint](https://ktlint.github.io/) - Code Formatter
 
 ## Versioning
 

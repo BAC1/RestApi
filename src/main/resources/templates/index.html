@@ -10,14 +10,44 @@
     <body>
         <div class="container">
             <div class="jumbotron" >
-                <h1 class="text-center">Welcome to the progressive-encoded image loader!</h1>
-
-                <p class="text-center">
-                    <a class="btn btn-primary" href="/showAllImages"></i>Show all progressive<br>encoded JPEG's</a>
-                </p>
+                <h1 class="text-center">Welcome to the Progressive-Encoded Image Loader!</h1>
+                <br>
 
                 <h4>How does it work?</h4>
-                <p>...</p>
+                <p>Progressive-kodierte JPEG's werden in Webanwendungen bereits während dem Ladevorgang bei voller
+                Auflösung angezeigt, während Basement-kodierte JPEG's Stück für Stück zeilenweise geladen und angezeigt
+                werden. Progressive JPEG's werden zuerst mit niedriger Qualität und während dem Ladevorgang mit immer
+                höhere Qualität im Browser dargestellt. Zurückzuführen ist dieses Verhalten darauf, dass Progressive-JPEG's
+                beim Kodierungsvorgang in mehreren Etappen kodiert werden. Vereinfacht gesagt, für jede
+                Qualitätssteigerung beim Ladevorgang wurde das JPEG zuvor einen Kodierungsvorgang unterzogen. Dabei
+                werden vom originalen JPEG nur bestimmte Bytes pro Kodierungsvorgang gespeichert, die dann einen weiteren
+                Anstieg der Darstellungsqualität ermöglichen. Dies bedeutet wiederum, dass all die gespeicherten Bytes
+                eines jeden Kodierungsvorgang unabhängig voneinander sind. Und genau diesen Effekt machen wir uns hier zu
+                nutze!</p>
+
+                <p>Bei einem Großteil aller Webanwendungen wird jedes Bild mit unterschiedlichen Auflösungen merhfach
+                abgespeichert (je eines für z. B. Smartphones, Tablets und Desktop-PC's). Dies bedeutet einerseits einen
+                erhöhten Service-Aufwand aber auch erhöhten Speicherplatz am Server. Stellt sich nun also die Frage, ob
+                man dieses Szenario nicht bequem und effizient umgehen kann? Und die Antwort lautet, ja ... sogar sehr
+                simpel!</p>
+
+                <p>Wie bereits erklärt, besteht ein Progressive-kodiertes JPEG aus einem Byte-Array, dass aus mehreren
+                voneinander unabhängigen Kodierungsvorgänge zusammengefügt ist. Dabei gilt zu beachten,
+                dass die Bytes am Anfang des gesamten Arrays den wichtigsten Teil zur Darstellung des Bildes ausmachen,
+                wohingegen die Bytes am Ende nur eine sehr untergeordnete Rolle spielen und unter Umständen sogar
+                störende Einflüsse, wie z. B. Rauschen, verursachen können! Um für alle Displayauflösung nur noch ein JPEG
+                abspeichern zu müssen, und dennoch die Übertragungsbandbreite und Speicherplatz auf den Empfangsgeräten
+                effizient zu nutzen, werden vor dem Senden der Bilddatei, abhängig von der Displaygröße des Empfangsgeräts,
+                ein Set aus Bytes am Ende des Byte-Arrays verworfen. Je kleiner die Displaygröße, umso mehr Bytes können
+                wir löschen! Dies führt am Empfangsgeräts verständlicherweise zu einem gewissen Qualitätsverlust bei der
+                Darstellung. Da das Bild jedoch auf einem kleineren Display dargestellt und in der Zielanwendung neu
+                skaliert wird, ist der optische Qualitätsverlust dennoch sehr gering! Somit erhalten wir bei nahezu
+                gleicher Qualität eine Ersparnis der Speichergröße von bis zu über 80%!</p>
+                <br>
+
+                <p class="text-center">
+                    <a class="btn btn-primary" href="/showAllImages"></i>Show all progressive encoded JPEG's</a>
+                </p>
             </div>
         </div>
     </body>

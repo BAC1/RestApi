@@ -80,14 +80,9 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-mustache')
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'mysql:mysql-connector-java'
-    compile('com.fasterxml.jackson.module:jackson-module-kotlin')
     compile('org.jetbrains.kotlin:kotlin-stdlib-jdk8')
     compile('org.jetbrains.kotlin:kotlin-reflect')
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
-    compile group: 'com.drewnoakes', name: 'metadata-extractor', version: '2.11.0'
-    compile group: 'com.adobe.xmp', name: 'xmpcore', version: '6.1.10'
-    compile group: 'org.jetbrains.exposed', name: 'exposed', version: '0.10.5'
-    compile group: 'joda-time', name: 'joda-time', version: '2.10'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '1.2.71'
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.2.71'

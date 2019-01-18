@@ -19,10 +19,11 @@ class WelcomeController {
     /**
      * Returns the html file as response to the browser when requesting the url "localhost:8080/" and "127.0.0.1:8080/".
      *
+     * @see		GetMapping		value = ["/"]
      * @return  html file name of the welcome page
      */
     
-    @GetMapping("/")
+    @GetMapping(value = ["/"])
     fun showWelcomePage(): String {
         logger.info("Welcome page requested")
         return "index"
