@@ -58,23 +58,42 @@ class ProgressiveController {
     fun addAllProgressiveImagesOnStartupToDatabase() {
         val pathOfCurrentDirectory = System.getProperty("user.dir")
         val pathToProgressiveImages = "$pathOfCurrentDirectory/src/main/resources/images/progressive/"
-	
-		logger.info("Add progressive JPEG's to database")
+		val pathToBasementImages = "$pathOfCurrentDirectory/src/main/resources/images/basement/"
 		
 		try {
 			progressiveRepository!!.deleteAll()
+			val progressiveConverter = ProgressiveConverter()
 			
-			File(pathToProgressiveImages).listFiles().forEach {
+			File(pathToBasementImages).listFiles().forEach {
 				if (it.extension == "jpeg" || it.extension == "jpg") {
-					addNewImageToDatabase(file = it)
+					progressiveConverter.convertToProgressive(
+							imageFile = it,
+							savePath = "$pathToProgressiveImages/${it.name}.${it.extension}"
+					)
+					
+					progressiveConverter.moveToProgressiveFolder(
+							imageFile = it,
+							pathToProgressiveImages = pathToProgressiveImages
+					)
 				} else {
-					logger.warn("File '${it.name}' with unsupported extension detected!")
+					logger.warn("File '${it.name}' with unsupported extension detected! Will be deleted ...")
+					it.delete()
 				}
 			}
 			
-			logger.info("All JPEG's in folder 'images/progressive' added to database")
+			logger.info("Add progressive JPEG's to database")
+			
+			File(pathToProgressiveImages).listFiles().forEach {
+				if (it.extension == "jpeg" || it.extension == "jpg") {
+					addImageToDatabase(file = it)
+				} else {
+					logger.warn("File '${it.name}' with unsupported extension detected! Will be deleted ...")
+				}
+			}
+			
+			logger.info("All progressive JPEG's added to database")
 		} catch (e: IOException) {
-			logger.error("Error while loading JPEG's to database!\n\t${e.message}")
+			logger.error("Error while loading progressive JPEG's to database!\n\t${e.message}")
 		} catch (e: Exception) {
 			logger.error(e.message)
 		}
@@ -151,7 +170,7 @@ class ProgressiveController {
      *
      * @param  file  JPEG file to be added to the database
      */
-	private fun addNewImageToDatabase(file: File) {
+	private fun addImageToDatabase(file: File) {
 		try {
 			val progressive = Progressive()
 			
