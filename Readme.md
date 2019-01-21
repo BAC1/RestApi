@@ -134,6 +134,19 @@ $ gradle bootRun
 
 **Note**: It is recommended to use Chrome.
 
+### Add new JPEG's to this project
+
+In order to use a custom JPEG in this project, add any JPEG with a '*.jpg' or '*.jpeg' extension to the resource folder
+**images/basement**. All JPEG's will automatically be encoded to progressive images, moved permanently to the resource 
+folder **images/progressive** and loaded to the database. These images can be loaded then via the browser. The 
+non-encoded JPEG's and any other unsupported files in the **images/basement** folder will be deleted at the end of the 
+encoding process. 
+
+The following file types are supported in the folders **images/basement** and **images/progressive**:
+* *.jpg
+* *.jpeg
+* *.txt
+
 ## JavaDoc
 
 * Run this command in the command line of Intellij

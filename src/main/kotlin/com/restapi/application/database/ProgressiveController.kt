@@ -47,8 +47,12 @@ class ProgressiveController {
     private var progressiveRepository: ProgressiveRepository? = null
     
     /**
-     * Adds all images in the resource folder "images/progressive" to the database when the "ApplicationReady" event is
-     * thrown.
+     * Encodes all JPEG's in the resource folder "images/basement" to progressive JPEG's. Afterwards, the encoded JPEG's
+     * will be moved to the resource folder "images/progressive". The non-encoded JPEG's and any other files (except for
+     * text files) in the resource folder "images/basement" will be deleted
+     *
+     * Adds all JPEG's in the resource folder "images/progressive" to the database. Any other files (except for text
+     * files) will be deleted in this folder.
 	 *
 	 * @throws  IOException				if e.g. <code>pathname</code> argument is <code>null</code>
 	 * @see		ApplicationReadyEvent	method is executed when application is running
@@ -63,34 +67,28 @@ class ProgressiveController {
 		try {
 			progressiveRepository!!.deleteAll()
 			val progressiveConverter = ProgressiveConverter()
-			
+
 			File(pathToBasementImages).listFiles().forEach {
-				if (it.extension == "jpeg" || it.extension == "jpg") {
+				if (checkJpegExtension(file = it)) {
 					progressiveConverter.convertToProgressive(
 							imageFile = it,
-							savePath = "$pathToProgressiveImages/${it.name}.${it.extension}"
-					)
-					
-					progressiveConverter.moveToProgressiveFolder(
-							imageFile = it,
-							pathToProgressiveImages = pathToProgressiveImages
+							savePath = "$pathToProgressiveImages/${it.name}"
 					)
 				} else {
-					logger.warn("File '${it.name}' with unsupported extension detected! Will be deleted ...")
-					it.delete()
+                    deleteUnsupportedFile(file = it)
 				}
 			}
-			
-			logger.info("Add progressive JPEG's to database")
-			
+
+			logger.info("Adding progressive JPEG's to database ...")
+
 			File(pathToProgressiveImages).listFiles().forEach {
-				if (it.extension == "jpeg" || it.extension == "jpg") {
+				if (checkJpegExtension(file = it)) {
 					addImageToDatabase(file = it)
 				} else {
-					logger.warn("File '${it.name}' with unsupported extension detected! Will be deleted ...")
+                    deleteUnsupportedFile(file = it)
 				}
 			}
-			
+
 			logger.info("All progressive JPEG's added to database")
 		} catch (e: IOException) {
 			logger.error("Error while loading progressive JPEG's to database!\n\t${e.message}")
@@ -98,7 +96,7 @@ class ProgressiveController {
 			logger.error(e.message)
 		}
     }
-    
+
     /**
      * Returns the requested JPEG image as byte array over the output stream of the response object.
      *
@@ -128,9 +126,9 @@ class ProgressiveController {
         val images = progressiveRepository!!.findAll()
         var media = ByteArray(0)
         val deviceType = MediaQuery().get(width = width)
-	
+
 		logger.info("Url '//loadImage/$fileName/$width' requested")
-	
+
 		try {
             images.forEach {
                 if (it.getName() == "${fileName.split(".").first()}.jpg" ||
@@ -144,10 +142,35 @@ class ProgressiveController {
         } catch (e: Exception) {
             logger.error("Error while loading image $fileName!\n\t${e.message}")
         }
-		
+
         return response.outputStream.write(media)
     }
-    
+
+    /**
+     * Checks whether the extension of the file belongs to a JPEG file, or not
+     *
+     * @param	file	file to be checked for its extension
+     * @return  returns 'true' if it's a JPEG file, and 'false' if not
+     */
+    private fun checkJpegExtension(file: File): Boolean = file.extension == "jpeg" || file.extension == "jpg"
+
+    /**
+     * Deletes unsupported files in the resource folders "images/basement" and "images/progressive". Supported files
+     * are any JPEG (*.jpg or *.jpeg) and text (*.txt) files.
+     *
+     * @param	file	file to be deleted
+     */
+    private fun deleteUnsupportedFile(file: File) {
+        try {
+            if (file.extension != "txt") {
+                logger.warn("File '${file.name}' with unsupported extension detected! File will be deleted ...")
+                file.delete()
+            }
+        } catch (e: Exception) {
+            logger.error("Error while deleting unsupported file!\n${e.message}")
+        }
+    }
+
     /**
      * Creates a file of the given JPEG filename and returns it as byte array.
      *
@@ -164,7 +187,7 @@ class ProgressiveController {
 			ByteArray(0)
 		}
     }
-    
+
     /**
      * Adds the byte array of a given JPEG file with its metadata to the database.
      *
@@ -173,14 +196,14 @@ class ProgressiveController {
 	private fun addImageToDatabase(file: File) {
 		try {
 			val progressive = Progressive()
-			
+
 			progressive.setName(file.name)
 			progressive.setExtension(file.extension)
 			progressive.setHeight(Metadata().getHeight(file = file))
 			progressive.setWidth(Metadata().getWidth(file = file))
 			progressive.setSize(file.readBytes().size)
 			progressive.setPath(file.path)
-			
+
 			progressiveRepository!!.save(progressive)
 			logger.info("Progressive image '${file.name}' added to database")
 		} catch (e: Exception) {
