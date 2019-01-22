@@ -174,7 +174,7 @@ class ProgressiveController {
     /**
      * Creates a file of the given JPEG filename and returns it as byte array.
      *
-     * @param   fileName                JPEG file name
+     * @param   fileName	JPEG file name
      * @return  byte array of the JPEG file
      * @see     javax.imageio.ImageIO#toByteArray(final InputStream input)
      */

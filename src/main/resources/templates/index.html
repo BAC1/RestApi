@@ -16,9 +16,9 @@
 
                 <h4>How does it work?</h4>
                 <p>Progressive-kodierte JPEG's werden in Webanwendungen bereits während dem Ladevorgang bei voller
-                Auflösung angezeigt, während Basement-kodierte JPEG's Stück für Stück zeilenweise geladen und dargestellt
-                werden. Progressive JPEG's werden zuerst mit niedriger Qualität und während dem Ladevorgang mit immer
-                höhere Qualität im Browser dargestellt. Zurückzuführen ist dieses Verhalten darauf, dass Progressive-JPEG's
+                Auflösung angezeigt, wohingegen Basement-kodierte JPEG's Stück für Stück zeilenweise geladen und dargestellt
+                werden. Progressive JPEG's werden zuerst mit niedriger Qualität und während dem Ladevorgang mit zunehmender
+                Qualität im Browser dargestellt. Zurückzuführen ist dieses Verhalten darauf, dass Progressive-JPEG's
                 beim Kodierungsvorgang in mehreren Etappen kodiert werden. Vereinfacht gesagt, für jede
                 Qualitätssteigerung beim Ladevorgang wurde das JPEG zuvor einen Kodierungsvorgang unterzogen. Dabei
                 werden vom originalen JPEG nur bestimmte Bytes pro Kodierungsvorgang gespeichert, die dann einen weiteren
@@ -41,9 +41,9 @@
                 effizient zu nutzen, werden vor dem Senden der Bilddatei, abhängig von der Displaygröße des Empfangsgeräts,
                 ein Set aus Bytes am Ende des Byte-Arrays verworfen. Je kleiner die Displaygröße, umso mehr Bytes können
                 wir löschen! Dies führt am Empfangsgeräts verständlicherweise zu einem gewissen Qualitätsverlust bei der
-                Darstellung. Da das Bild jedoch auf einem kleineren Display dargestellt und in der Zielanwendung neu
-                skaliert wird, ist der optische Qualitätsverlust dennoch sehr gering! Somit erhalten wir bei nahezu
-                gleicher Darstellungs-Qualität eine Ersparnis der Speichergröße von bis zu über 80%!</p>
+                Darstellung. Da das JPEG jedoch auf einem kleineren Display dargestellt und in der Zielanwendung neu
+                skaliert wird, ist der optische Qualitätsverlust dennoch kaum wahrnehmbar! Somit erhalten wir bei nahezu
+                gleicher Darstellungs-Qualität eine Ersparnis der Speichergröße von bis zu 60%!</p>
                 <br>
 
                 <p class="text-center">

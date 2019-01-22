@@ -47,7 +47,6 @@ class ProgressiveConverter {
 			imageWriter.output = imageOutputStream
 			val param = imageWriter.defaultWriteParam
 			param.progressiveMode = ImageWriteParam.MODE_DEFAULT
-
 			imageWriter.write(null, IIOImage(bufferedImage, null, null), param)
 			
 			fileOutputStream.close()
@@ -65,7 +64,7 @@ class ProgressiveConverter {
 	/**
 	 * Deletes the non-encoded JPEG after the progression-encoding process
 	 *
-	 * @param   file			file to be deleted
+	 * @param   file	file to be deleted
 	 */
 	private fun deleteOldImage(file: File) {
 		try {

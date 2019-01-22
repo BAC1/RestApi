@@ -26,7 +26,7 @@ class MediaQueryBeans {
 	/**
 	 * This @Bean loads the max width for mobile devices
 	 *
-	 * @return  device type 'mobile'
+	 * @return  max width for device type 'mobile' (in pixel)
 	 */
 	@Bean
 	fun getMobileWidth(): Int = env.getProperty("mobile.display.width")!!.toInt()
@@ -34,7 +34,7 @@ class MediaQueryBeans {
 	/**
 	 * This @Bean loads the max width for tablet devices
 	 *
-	 * @return  device type 'tablet'
+	 * @return  max width for device type 'tablet' (in pixel)
 	 */
 	@Bean
 	fun getTabletWidth(): Int = env.getProperty("tablet.display.width")!!.toInt()
